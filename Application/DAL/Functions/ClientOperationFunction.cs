@@ -30,8 +30,7 @@ namespace DAL.Functions
             return result?.FirstOrDefault();
         }
 
-
-        public async Task<ClientOperationResult[]?> GetOperationsAsync(ClientOperationsRequest model)
+        public async Task<IEnumerable<ClientOperationResult>?> GetOperationsAsync(ClientOperationsRequest model)
         {
           
             string json = JsonSerializer.Serialize(model);
@@ -41,6 +40,22 @@ namespace DAL.Functions
 
             return result?.FirstOrDefault();
           
+        }
+
+        public async Task<IEnumerable<ExchangeCourseResult>?> GetExchangeCourseByDate(DateTime date)
+        {
+            IEnumerable<ExchangeCourseResult[]> result = await _dbConnection
+                .QueryAsync<ExchangeCourseResult[]>("select * from fn_GetCurrencyExchangeCourse(@searchDate)", param: new { searchDate = date });
+
+            return result?.FirstOrDefault();
+        }
+
+        public async Task<IEnumerable<ExchangeCourseResult>?> GetExchangeCourses()
+        {
+            IEnumerable<ExchangeCourseResult[]> result = await _dbConnection
+                .QueryAsync<ExchangeCourseResult[]>("select * from fn_GetCurrencyExchangeCourse()");
+
+            return result?.FirstOrDefault();
         }
     }
 }

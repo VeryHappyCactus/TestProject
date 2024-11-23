@@ -28,7 +28,7 @@ namespace Backend.Configs.Mapping
                 .ForMember(dest => dest.department_address, opt => opt.MapFrom(source => source.DepartmentAddress));
 
             //======Results==========================================================================
-            this.CreateMap<CommonCOResult.CurrentExchangeCourseResultMessage, DalCOResult.CurrentExchangeCourseResult>().ReverseMap();
+            this.CreateMap<CommonCOResult.ExchangeCourseResultMessage, DalCOResult.ExchangeCourseResult>().ReverseMap();
             this.CreateMap<CommonCOResult.ClientOperationResultMessage, DalCOResult.ClientOperationResult>().ReverseMap();
             this.CreateMap<DalCOResult.ClientWithdrawOperationResult, CommonCOResult.ClientWithdrawOperationResultMessage>()
                 .ForMember(dest => dest.ClientOperationId, opt => opt.MapFrom(source => source.ClientOperationId));

@@ -51,6 +51,9 @@ namespace Backend.Queue
 
             try
             {
+                if (context.Body == null)
+                    throw new Exception("MessageContext.Body is null");
+
                 IJob job = _jobFactory.CreateJob(context.Body!);
 
                 messageContext = new MessageContext()

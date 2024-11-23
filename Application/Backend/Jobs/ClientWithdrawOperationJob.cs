@@ -40,7 +40,7 @@ namespace Backend.Jobs
             const int amountMin = 100;
             const int amountMax = 100_000;
             
-            if (request.amount < amountMin && request.amount > amountMax)
+            if (request.amount < amountMin || request.amount > amountMax)
             {
                 erroMessage = GetError((int)ClientWithdrawOperationErrorTypes.AmountError);
                 return true;

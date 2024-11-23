@@ -8,5 +8,8 @@ namespace DAL.Respositories
         public Task<ClientWithdrawOperationResult> CreateClientOperation(ClientWithdrawOperationRequest request);
         public Task<ClientOperationResult?> GetClientOperationById(Guid clientOperationId);
         public Task<IEnumerable<ClientOperationResult>?> GetClientOperations(ClientOperationsRequest request);
+        public Task<IEnumerable<ExchangeCourseResult>?> GetExchangeCourseByDate(DateTime date);
+        public Task<IEnumerable<ExchangeCourseResult>?> GetExchangeCourses();
+        
     }
 }

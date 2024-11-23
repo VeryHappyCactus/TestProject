@@ -6,7 +6,7 @@ using MediatorHandlers.Handlers.ClientOperations.Result;
 
 namespace MediatorHandlers.Handlers.ClientOperations.Request
 {
-    public class CreateClientWithdrawOperationRequest : IRequest<HandlerResultContext<CreateClientWithdrawOperationResult>>
+    public class CreateClientWithdrawOperationRequest : IRequest<CreateClientWithdrawOperationResult?>
     {
         public Guid ClientId { get; set; }
         public ClientDepartmentAddressRequest? DepartmentAddress { get; set; }

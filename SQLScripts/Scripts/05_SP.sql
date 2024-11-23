@@ -1,3 +1,6 @@
+
+  \c "MyTestDB";
+
 DROP PROCEDURE IF EXISTS sp_Withdraw;
 CREATE PROCEDURE sp_Withdraw(IN msg JSONB, INOUT rClientOperationId UUID DEFAULT NULL, INOUT rErrorCode INTEGER DEFAULT NULL)
 LANGUAGE plpgsql
@@ -84,7 +87,7 @@ BEGIN
 		(
 			SELECT MAX(tces.CreationDate)
 			FROM CurrencyExchangeCourse tces
-			WHERE tces.CurrencyId = c.CurrencyId AND tces.CreationDate::date = CURRENT_DATE
+			WHERE tces.CurrencyId = c.CurrencyId AND tces.CreationDate::date <= CURRENT_DATE
 		)
 		INTO tCurrencyExchangeCourseData;	
 	END IF;

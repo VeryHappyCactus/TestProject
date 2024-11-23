@@ -13,7 +13,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DAL", "DAL\DAL.csproj", "{1
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MediatorHandlers", "MediatorHandlers\MediatorHandlers.csproj", "{28716E30-CD9C-44EB-B976-C716226D0DAE}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Backend.Tests", "Backend.Tests\Backend.Tests.csproj", "{A118F9CF-2638-4790-AD80-F9F879BAADB0}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Backend.Tests", "Backend.Tests\Backend.Tests.csproj", "{A118F9CF-2638-4790-AD80-F9F879BAADB0}"
+EndProject
+Project("{E53339B2-1760-4266-BCC7-CA923CBCF16C}") = "docker-compose", "docker-compose.dcproj", "{2BE8C448-8C38-4405-A506-4F6AE6DAA7AC}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -45,6 +47,10 @@ Global
 		{A118F9CF-2638-4790-AD80-F9F879BAADB0}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{A118F9CF-2638-4790-AD80-F9F879BAADB0}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{A118F9CF-2638-4790-AD80-F9F879BAADB0}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2BE8C448-8C38-4405-A506-4F6AE6DAA7AC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2BE8C448-8C38-4405-A506-4F6AE6DAA7AC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2BE8C448-8C38-4405-A506-4F6AE6DAA7AC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2BE8C448-8C38-4405-A506-4F6AE6DAA7AC}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

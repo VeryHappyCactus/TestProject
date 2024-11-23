@@ -1,6 +1,7 @@
 ﻿using DAL.Contexts;
 using DAL.Enteties.ClientOperations.Request;
 using DAL.Enteties.ClientOperations.Result;
+using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace DAL.Respositories
 {
@@ -26,6 +27,16 @@ namespace DAL.Respositories
         public async Task<IEnumerable<ClientOperationResult>?> GetClientOperations(ClientOperationsRequest request)
         {
             return await _context.Function.CleintOperationFunction.GetOperationsAsync(request);
+        }
+
+        public async Task<IEnumerable<ExchangeCourseResult>?> GetExchangeCourseByDate(DateTime date)
+        {
+            return await _context.Function.CleintOperationFunction.GetExchangeCourseByDate(date);
+        }
+
+        public async Task<IEnumerable<ExchangeCourseResult>?> GetExchangeCourses()
+        {
+            return await _context.Function.CleintOperationFunction.GetExchangeCourses();
         }
     }
 }

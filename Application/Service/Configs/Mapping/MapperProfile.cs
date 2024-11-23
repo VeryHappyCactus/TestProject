@@ -22,13 +22,12 @@ namespace Service.Configs.Mapping
             this.CreateMap<ServiceCORequest.ClientOperationsRequest, HandlerCORequest.GetClientOperationsRequest>().ReverseMap();
 
             //======Results==========================================================================
-            this.CreateMap<ServiceCOResult.CurrentExchangeCourseResult, HandlerCOResult.CurrentExchangeCourseResult>().ReverseMap();
+            this.CreateMap<ServiceCOResult.CurrentExchangeCourseResult, HandlerCOResult.ExchangeCourseResult>().ReverseMap();
             this.CreateMap<ServiceCOResult.ClientWithdrawOperationResult, HandlerCOResult.CreateClientWithdrawOperationResult>().ReverseMap();
             this.CreateMap<ServiceCOResult.ClientOperationResult, HandlerCOResult.GetClientOperationResult>().ReverseMap();
 
             //======Other==========================================================================
 
-            this.CreateMap<ServiceModels.ErrorContext, HandlerModels.HandlerErrorContext>().ReverseMap();
             this.CreateMap(typeof(ServiceModels.ResultContext<>), typeof(HandlerModels.HandlerResultContext<>)).ReverseMap();
         }
     }

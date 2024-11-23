@@ -11,9 +11,10 @@ namespace Common.Queue.Message.ClientOperation.Result
         public decimal OperationValue { get; set; }
         public decimal? CurrencyCourseSaleValue { get; set; }
         public decimal? CurrencyCoursePurchaseValue { get; set; }
-        public CurrencyISONames? CurrencyISOName { get; set; }
+        public CurrencyISONames? ClientAccountCurrencyISOName { get; set; }
+        public CurrencyISONames? OperationCurrencyISOName { get; set; }
         public ClientOperationTypes ClientOperationType { get; set; }
         public ClientOperationStatuses ClientOperationStatus { get; set; }
-        public CurrentExchangeCourseResultMessage[]? CurrentExchangeCourse { get; set; }
+        public ExchangeCourseResultMessage[]? CurrentExchangeCourse { get; set; }
     }
 }

@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="15.0" Sdk="Microsoft.Docker.Sdk">
+  <PropertyGroup Label="Globals">
+    <ProjectVersion>2.1</ProjectVersion>
+    <DockerTargetOS>Linux</DockerTargetOS>
+    <DockerPublishLocally>False</DockerPublishLocally>
+    <ProjectGuid>2be8c448-8c38-4405-a506-4f6ae6daa7ac</ProjectGuid>
+    <DockerLaunchAction>LaunchBrowser</DockerLaunchAction>
+    <DockerServiceUrl>{Scheme}://localhost:{ServicePort}/swagger/index.html</DockerServiceUrl>
+    <DockerServiceName>service</DockerServiceName>
+  </PropertyGroup>
+  <ItemGroup>
+    <None Remove="DockerFiles\SQLSripts\**" />
+    <None Remove="SQLScripts\**" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include=".dockerignore" />
+    <None Include="docker-compose.yml" />
+    <None Include="DockerFiles\BackendSecret.json" />
+    <None Include="DockerFiles\ServiceSecret.json" />
+    <None Include="DockerFiles\SQLScripts\01_Tables.sql" />
+    <None Include="DockerFiles\SQLScripts\02_Data.sql" />
+    <None Include="DockerFiles\SQLScripts\03_FN1.sql" />
+    <None Include="DockerFiles\SQLScripts\04_FN2.sql" />
+    <None Include="DockerFiles\SQLScripts\05_SP.sql" />
+  </ItemGroup>
+</Project>

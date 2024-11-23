@@ -24,8 +24,8 @@ namespace DAL.Contexts
 
             SqlMapper.AddTypeHandler(new JsonTypeHandler<ClientOperationResult>(appCommonSettings));
             SqlMapper.AddTypeHandler(new JsonTypeHandler<ClientOperationResult[]>(appCommonSettings));
-            SqlMapper.AddTypeHandler(new JsonTypeHandler<CurrentExchangeCourseResult>(appCommonSettings));
-
+            SqlMapper.AddTypeHandler(new JsonTypeHandler<ExchangeCourseResult>(appCommonSettings));
+            SqlMapper.AddTypeHandler(new JsonTypeHandler<ExchangeCourseResult[]>(appCommonSettings));
 
             NpgsqlConnection dbConnection = new NpgsqlConnection(secretManager.SecretSettings.DataBaseSettings!.ConnectionString!);
 

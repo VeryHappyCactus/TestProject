@@ -1,3 +1,6 @@
+
+  \c "MyTestDB";
+
 DROP FUNCTION IF EXISTS fn_GetStatusInfo;
 CREATE FUNCTION fn_GetStatusInfo(IN msg JSONB)
 RETURNS JSON
@@ -19,19 +22,25 @@ $$
 						, co.ClientAccountTotalAmountOld 	as TotalAamountOld
 						, co.ClientAccountTotalAmountNew 	as TotalAmountNew
 						, co.ClientOperationValue          as ClientOperationValue
-						, c.CurrencyISOName					
+						, cac.CurrencyISOName				as ClientAccountCurrencyISOName
+						, c.CurrencyISOName					as OperationCurrencyISOName
 						, ces.SaleValue						as CurrencyCourseSaleValue
 						, ces.PurchaseValue					as CurrencyCoursePurchaseValue
 						, (SELECT json_agg(t) 
 							FROM (SELECT 
-								CurrencyISOName 
-								, SaleValue		
-								, PurchaseValue	
-								, CreationDate  
-							 FROM fn_GetCurrentCurrencyExchangeCourse()) as t) as current_exchange_course
+										CurrencyISOName 
+										, SaleValue		
+										, PurchaseValue	
+										, CreationDate 
+									FROM CurrencyExchangeCourse tces
+									INNER JOIN Currency tc
+										ON tces.CurrencyId = tc.CurrencyId
+									WHERE tces.CurrencyExchangeCourseId = co.CurrencyExchangeCourseId) as t) as CurrentExchangeCourse
 					FROM ClientOperation co
 					INNER JOIN ClientAccount ca
-						ON co.ClientAccountId = ca.ClientAccountId 
+						ON co.ClientAccountId = ca.ClientAccountId
+					INNER JOIN Currency cac
+						ON ca.CurrencyId = cac.CurrencyId
 					LEFT JOIN CurrencyExchangeCourse ces
 						ON co.CurrencyExchangeCourseId = ces.CurrencyExchangeCourseId
 					LEFT JOIN Currency c
@@ -49,6 +58,7 @@ $$
 			AND msg -> 'department_address' ? 'street_name' 
 			AND msg -> 'department_address' ? 'building_number') THEN
 				res := (
+
 					WITH cte AS
 					(
 											SELECT 
@@ -58,11 +68,24 @@ $$
 						, ca.AccountTotalAmount      		as CurrentTotalAmount
 						, co.ClientAccountTotalAmountOld   as TotalAmountOld
 						, co.ClientAccountTotalAmountNew   as TotalAmountNew
-						, co.ClientOperationValue          
-						, c.CurrencyISOName					
+						, co.ClientOperationValue          as OperationValue
+						, cac.CurrencyISOName				as ClientAccountCurrencyISOName
+						, c.CurrencyISOName					as OperationCurrencyISOName
 						, ces.SaleValue						as CurrencyCourseSaleValue
 						, ces.PurchaseValue					as CurrencyCoursePurchaseValue
+						, (SELECT json_agg(t) 
+							FROM (SELECT 
+										CurrencyISOName 
+										, SaleValue		
+										, PurchaseValue	
+										, CreationDate 
+									FROM CurrencyExchangeCourse tces
+									INNER JOIN Currency tc
+										ON tces.CurrencyId = tc.CurrencyId
+									WHERE tces.CurrencyExchangeCourseId = co.CurrencyExchangeCourseId) as t) as CurrentExchangeCourse 
 					FROM ClientAccount ca
+					INNER JOIN Currency cac
+						ON ca.CurrencyId = cac.CurrencyId
 					INNER JOIN ClientDepartment cd
 						ON ca.ClientId = cd.Clientid
 					INNER JOIN DepartmentAddress da

@@ -1,8 +1,8 @@
 ﻿using Common.Enums;
 
-namespace DAL.Enteties.ClientOperations.Result
+namespace MediatorHandlers.Handlers.ClientOperations.Result
 {
-    public class CurrentExchangeCourseResult
+    public class ExchangeCourseResult
     {
         public CurrencyISONames CurrencyISOName { get; set; }
         public decimal SaleValue { get; set; }

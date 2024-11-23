@@ -9,9 +9,9 @@ using DAL.Enteties.ClientOperations.Result;
 
 namespace Backend.Jobs
 {
-    public class ClientOperationByIdJob : BaseJob<ClientOperationRequestMessage>
+    public class GetClientOperationJob : BaseJob<ClientOperationRequestMessage>
     {
-        public ClientOperationByIdJob(IUnitOfWork unitOfWork, IMapper mapper)
+        public GetClientOperationJob(IUnitOfWork unitOfWork, IMapper mapper)
            : base(unitOfWork, mapper)
         {
         }

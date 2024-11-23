@@ -3,13 +3,13 @@
     "Backend": {
       "commandName": "Project",
       "environmentVariables": {
-        "keySecretSettings": "D:\\Programming\\TZ\\TZRepo\\Backend\\Backend\\Configs\\DevConfigs\\BackendSecret.json"
+        "keySecretSettings": "./Configs/DevConfigs/BackendSecret.json"
       }
     },
     "Container (Dockerfile)": {
       "commandName": "Docker",
       "environmentVariables": {
-        "keySecretSettings": "D:\\Programming\\TZ\\TZRepo\\Backend\\Backend\\Configs\\DevConfigs\\BackendSecret.json"
+       
       }
     }
   }

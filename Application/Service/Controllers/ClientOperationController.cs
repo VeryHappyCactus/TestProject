@@ -3,7 +3,6 @@ using Microsoft.AspNetCore.Mvc;
 using AutoMapper;
 using MediatR;
 
-using MediatorHandlers.Handlers;
 using MediatorHandlers.Handlers.ClientOperations.Request;
 using MediatorHandlers.Handlers.ClientOperations.Result;
 
@@ -15,6 +14,7 @@ namespace Service.Controllers
 {
     [ApiController]
     [Route("[controller]")]
+   
     public class ClientOperationController : ControllerBase
     {
         private readonly IMediator _mediator;
@@ -31,19 +31,18 @@ namespace Service.Controllers
         [HttpPost("CreateClientWithdrawOperation")]
         public async Task<ResultContext<ClientWithdrawOperationResult>> CreateClientWithdrawOperation(ClientWithdrawOperationRequest request)
         {
-
             CreateClientWithdrawOperationRequest createOperation = _mapper.Map<CreateClientWithdrawOperationRequest>(request);
-            HandlerResultContext<CreateClientWithdrawOperationResult> result = await _mediator.Send(createOperation);
-
+            CreateClientWithdrawOperationResult? result = await _mediator.Send(createOperation);
+            
             return _mapper.Map<ResultContext<ClientWithdrawOperationResult>>(result);
         }
 
         [HttpPost("GetClientOperation")]
         public async Task<ResultContext<ClientOperationResult>> GetClientOperation(ClientOperationRequest request)
         {
-
+            
             GetClientOperationRequest getOperation = _mapper.Map<GetClientOperationRequest>(request);
-            HandlerResultContext<GetClientOperationResult> result = await _mediator.Send(getOperation);
+            GetClientOperationResult? result = await _mediator.Send(getOperation);
 
             return _mapper.Map<ResultContext<ClientOperationResult>>(result);
         }
@@ -53,9 +52,10 @@ namespace Service.Controllers
         {
 
             GetClientOperationsRequest getOperations = _mapper.Map<GetClientOperationsRequest>(request);
-            HandlerResultContext<IEnumerable<GetClientOperationResult>> result = await _mediator.Send(getOperations);
+            IEnumerable<GetClientOperationResult>? result = await _mediator.Send(getOperations);
 
             return _mapper.Map<ResultContext<IEnumerable<ClientOperationResult>>>(result);
         }
+
     }
 }

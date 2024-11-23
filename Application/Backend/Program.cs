@@ -33,10 +33,10 @@ namespace Backend
                 _logger!.LogError(ex, ex.Message);
             }
 
-            Console.WriteLine("ApplicationManager: press Esc to exit.");
-
             while (true)
             {
+                Console.WriteLine("ApplicationManager: press Esc to exit.");
+
                 int key = Console.Read();
                 if (key == (int)'Z')
                     break;

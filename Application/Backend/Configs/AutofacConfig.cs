@@ -67,11 +67,11 @@ namespace Backend.Configs
                 .Named<IJob>(nameof(ClientWithdrawOperationRequestMessage))
                 .SingleInstance();
 
-            containerBuilder.RegisterType<ClientOperationByIdJob>()
+            containerBuilder.RegisterType<GetClientOperationJob>()
                 .Named<IJob>(nameof(ClientOperationRequestMessage))
                 .SingleInstance();
 
-            containerBuilder.RegisterType<ClientOperationsByClientJob>()
+            containerBuilder.RegisterType<GetClientOperationsJob>()
                 .Named<IJob>(nameof(ClientOperationsRequestMessage))
                 .SingleInstance();
 

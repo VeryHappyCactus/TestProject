@@ -3,6 +3,6 @@ namespace Common.Queue.Message
 {
     public class MessageCollection : BaseMessage
     {
-        public BaseMessage[]? BaseMessages { get; set; }
+        public IEnumerable<BaseMessage>? BaseMessages { get; set; }
     }
 }

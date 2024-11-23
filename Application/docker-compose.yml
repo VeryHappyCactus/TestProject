@@ -1,0 +1,94 @@
+name: app-container
+services:
+    rabbitmq:
+        image: rabbitmq:4.0-management
+        container_name: rabbitmq
+        hostname: rabbitmq
+        labels:
+            name: rabbitmq
+        restart: always
+        environment:
+          - RABBITMQ_DEFAULT_USER=rmuser
+          - RABBITMQ_DEFAULT_PASS=rmpassword
+          - RABBITMQ_SERVER_ADDITIONAL_ERL_ARGS=-rabbit log_levels [{connection,error},{default,error}] disk_free_limit 2147483648
+        volumes:
+          - ./rabbitmq:/var/lib/rabbitmq
+        ports:
+          - 15672:15672
+          - 5672:5672
+        networks:
+          - network_config_all
+      
+    postgres:
+        image: postgres
+        restart: always
+        container_name: postgres
+        hostname: postgres
+        labels:
+            name: postgres
+        environment:
+          POSTGRES_PASSWORD: 12345
+          PGCLIENTENCODING: UTF8
+        volumes:
+          - pgdata:/var/lib/postgresql/data
+          - ../SQLScripts/Scripts/:/docker-entrypoint-initdb.d/
+        ports:
+          - 8091:5432
+        networks:
+          - network_config_all
+
+    backend:
+        image: backend:latest
+        container_name: backend
+        hostname: backend
+        restart: always
+        build:
+            context: .
+            dockerfile: Backend/Dockerfile
+        environment:
+            keySecretSettings: "/run/secrets/backend_secret_file"
+        secrets:
+            - backend_secret_file
+        networks:
+          - network_config_all
+        depends_on:
+          - rabbitmq
+          - postgres
+            
+    service:
+        image: service:latest
+        container_name: service
+        hostname: service
+        restart: always
+        build:
+            context: .
+            dockerfile: Service/Dockerfile
+        environment:
+            keySecretSettings: "/run/secrets/service_secret_file"
+        secrets:
+            - service_secret_file
+        ports:
+            - 8093:8080
+        networks:
+          - network_config_all
+        depends_on:
+          - rabbitmq
+          - postgres
+volumes:
+  pgdata:
+     
+secrets:
+  backend_secret_file:
+    file: ./DockerFiles/BackendSecret.json
+  service_secret_file:
+    file: ./DockerFiles/ServiceSecret.json
+
+networks:
+  network_config_all:
+    name: network_config_all
+    ipam:
+      driver: default 
+      config:
+        - subnet: 10.0.0.0/24
+          gateway: 10.0.0.1
+

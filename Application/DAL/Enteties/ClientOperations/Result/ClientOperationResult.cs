@@ -8,13 +8,14 @@ namespace DAL.Enteties.ClientOperations.Result
         public decimal CurrentTotalAmount { get; set; }
         public decimal TotalAmountOld { get; set; }
         public decimal TotalAmountNew { get; set; }
-        public decimal ClientOperationValue { get; set; }
+        public decimal OperationValue { get; set; }
         public decimal? CurrencyCourseSaleValue { get; set; }
         public decimal? CurrencyCoursePurchasValue { get; set; }
-        public CurrencyISONames? CurrencyISOName { get; set; }
+        public CurrencyISONames? ClientAccountCurrencyISOName { get; set; }
+        public CurrencyISONames? OperationCurrencyISOName { get; set; }
         public ClientOperationTypes ClientOperationType { get; set; }
         public ClientOperationStatuses ClientOperationStatus { get; set; }
-        public CurrentExchangeCourseResult[]? CurrentExchangeCourse { get; set; }
+        public ExchangeCourseResult[]? CurrentExchangeCourse { get; set; }
     }
 }
 

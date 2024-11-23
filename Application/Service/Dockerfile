@@ -5,15 +5,16 @@ FROM mcr.microsoft.com/dotnet/aspnet:8.0 AS base
 USER app
 WORKDIR /app
 EXPOSE 8080
-EXPOSE 8081
 
 
 # This stage is used to build the service project
 FROM mcr.microsoft.com/dotnet/sdk:8.0 AS build
 ARG BUILD_CONFIGURATION=Release
 WORKDIR /src
-COPY ["Service/Service.csproj", "Service/"]
-RUN dotnet restore "./Service/Service.csproj"
+#COPY ["Service/Service.csproj", "Service/"]
+#COPY ["Common/Common.csproj", "Common/"]
+#COPY ["MediatorHandlers/MediatorHandlers.csproj", "MediatorHandlers/"]
+RUN dotnet restore "Service/Service.csproj"
 COPY . .
 WORKDIR "/src/Service"
 RUN dotnet build "./Service.csproj" -c $BUILD_CONFIGURATION -o /app/build

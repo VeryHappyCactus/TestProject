@@ -22,7 +22,7 @@ namespace MediatorHandlers.Configs.Mapping
             CreateMap<CommonCORequest.ClientOperationsRequestMessage, HandlerCORequest.GetClientOperationsRequest>().ReverseMap();
 
             //======Results==========================================================================
-            CreateMap<CommonCOResult.CurrentExchangeCourseResultMessage, HandlerCOResult.CurrentExchangeCourseResult>().ReverseMap();
+            CreateMap<CommonCOResult.ExchangeCourseResultMessage, HandlerCOResult.ExchangeCourseResult>().ReverseMap();
             CreateMap<CommonCOResult.ClientWithdrawOperationResultMessage, HandlerCOResult.CreateClientWithdrawOperationResult>().ReverseMap();
             CreateMap<CommonCOResult.ClientOperationResultMessage, HandlerCOResult.GetClientOperationResult>().ReverseMap();
 

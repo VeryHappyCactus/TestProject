@@ -1,4 +1,6 @@
 
+  \c "MyTestDB";
+
 DO
 $$
 	DECLARE

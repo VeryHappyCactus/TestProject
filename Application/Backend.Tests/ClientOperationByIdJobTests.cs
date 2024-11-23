@@ -19,6 +19,16 @@ namespace Backend.Tests
         private readonly IMapper _mapper = AutoMapperConfig.GetMapper();
 
         [Fact]
+        public void Thtow_Exceptions_When_Constructor_Arguments_Is_Null()
+        {
+            Mock<IUnitOfWork> mockUnitOfWork = new Mock<IUnitOfWork>();
+            Mock<IMapper> mockMapper = new Mock<IMapper>();
+
+            Assert.Throws<ArgumentNullException>(() => new GetClientOperationJob((null)!, mockMapper.Object));
+            Assert.Throws<ArgumentNullException>(() => new GetClientOperationJob(mockUnitOfWork.Object, (null)!));
+        }
+
+        [Fact]
         public async Task Get_CientOperaion_By_Id_AND_Return_Null_When_No_Record()
         {
             Guid clientOperationIdInProc = Guid.NewGuid();
@@ -26,7 +36,7 @@ namespace Backend.Tests
 
             IUnitOfWork unitOfWork = GetUnitOfWork(clientOperationIdInProc, clientOperationIdExpected);
 
-            IJob job = new ClientOperationByIdJob(unitOfWork, _mapper);
+            IJob job = new GetClientOperationJob(unitOfWork, _mapper);
 
             BaseMessage? baseMessage = await job.ExecuteAsync(new ClientOperationRequestMessage()
             {
@@ -45,7 +55,7 @@ namespace Backend.Tests
 
             IUnitOfWork unitOfWork = GetUnitOfWork(clientOperationIdInProc, clientOperationIdWithNull);
 
-            IJob job = new ClientOperationByIdJob(unitOfWork, _mapper);
+            IJob job = new GetClientOperationJob(unitOfWork, _mapper);
 
             BaseMessage? baseMessage = await job.ExecuteAsync(new ClientOperationRequestMessage()
             {
@@ -62,7 +72,6 @@ namespace Backend.Tests
             Assert.NotEqual(clientOperationIdExpected, clientOperationIdWithNull);
             Assert.Equal(resultMessage.ClientOperationId, clientOperationIdExpected);
         }
-
 
         private IUnitOfWork GetUnitOfWork(Guid clientOperationIdInProc, Guid clientOperationIdWithNull)
         {
@@ -87,6 +96,5 @@ namespace Backend.Tests
 
             return mockUnitOfWork.Object;
         }
-        
     }
 }

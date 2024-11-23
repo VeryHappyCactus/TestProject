@@ -1,8 +1,37 @@
---Если надо, то можно создавать индексы на внешнии ключи. Я делать не стал, тестовое приложение, лишняя работа и нагрузка на базу. я индексы вообще создавать не стал
---Так же я не стал заниматься переводами, делать какие-то таблицы с дескрипшенами названиями под различные языки.
---так же не стал добавлять поля с временем обновления (CreationDate (добавил)/UpdateDate)
---не использовал очередь сообщений для postgresql и не реализовываол свою
---Тестовое задание, можно писать и писать...
+
+
+DROP DATABASE IF EXISTS "MyTestDB";
+CREATE DATABASE "MyTestDB"
+  WITH OWNER "postgres"
+  ENCODING 'UTF8'
+  --ICU_LOCALE "ru-RU"
+  --LC_COLLATE = 'ru_RU.UTF-8'
+  --LC_CTYPE = 'ru_RU.UTF-8'
+  TEMPLATE = template0;
+  
+  \c "MyTestDB";
+
+/*
+DROP PROCEDURE IF EXISTS sp_Withdraw;
+DROP FUNCTION IF EXISTS fn_GetStatusInfo;
+DROP FUNCTION IF EXISTS fn_GetCurrentCurrencyExchangeCourse;
+
+DROP TABLE IF EXISTS ClientOperation;
+DROP TABLE IF EXISTS ClientAccount; -- есть счет организации или депортамента, есть счета клиентов. оставлю только клиентов.
+DROP TABLE IF EXISTS CurrencyExchangeCourse;
+DROP TABLE IF EXISTS Currency;
+DROP TABLE IF EXISTS ClientDepartment; 
+DROP TABLE IF EXISTS Client;
+DROP TABLE IF EXISTS DepartmentAddress;
+DROP TABLE IF EXISTS Department;
+DROP TABLE IF EXISTS City;
+DROP TABLE IF EXISTS Country;
+
+DROP TYPE IF EXISTS ClientOperationTypes;
+DROP TYPE IF EXISTS ClientOperationStatuses;
+DROP TYPE IF EXISTS CurrencyISONames;
+*/
+
 
 DROP TYPE IF EXISTS CurrencyISONames;
 CREATE TYPE CurrencyISONames AS ENUM ('USD', 'EUR', 'UAH');
@@ -151,27 +180,6 @@ CREATE TABLE ClientOperation
 
 
 
-
-/*
-DROP PROCEDURE IF EXISTS sp_Withdraw;
-DROP FUNCTION IF EXISTS fn_GetStatusInfo;
-DROP FUNCTION IF EXISTS fn_GetCurrentCurrencyExchangeCourse;
-
-DROP TABLE IF EXISTS ClientOperation;
-DROP TABLE IF EXISTS ClientAccount; -- есть счет организации или депортамента, есть счета клиентов. оставлю только клиентов.
-DROP TABLE IF EXISTS CurrencyExchangeCourse;
-DROP TABLE IF EXISTS Currency;
-DROP TABLE IF EXISTS ClientDepartment; 
-DROP TABLE IF EXISTS Client;
-DROP TABLE IF EXISTS DepartmentAddress;
-DROP TABLE IF EXISTS Department;
-DROP TABLE IF EXISTS City;
-DROP TABLE IF EXISTS Country;
-
-DROP TYPE IF EXISTS ClientOperationTypes;
-DROP TYPE IF EXISTS ClientOperationStatuses;
-DROP TYPE IF EXISTS CurrencyISONames;
-*/
 
 
 
