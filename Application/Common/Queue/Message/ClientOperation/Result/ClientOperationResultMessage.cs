@@ -15,6 +15,6 @@ namespace Common.Queue.Message.ClientOperation.Result
         public CurrencyISONames? OperationCurrencyISOName { get; set; }
         public ClientOperationTypes ClientOperationType { get; set; }
         public ClientOperationStatuses ClientOperationStatus { get; set; }
-        public ExchangeCourseResultMessage[]? CurrentExchangeCourse { get; set; }
+        public ExchangeCourseResultMessage? CurrentExchangeCourse { get; set; }
     }
 }

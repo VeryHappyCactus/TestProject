@@ -22,7 +22,7 @@ namespace Service.Configs.Mapping
             this.CreateMap<ServiceCORequest.ClientOperationsRequest, HandlerCORequest.GetClientOperationsRequest>().ReverseMap();
 
             //======Results==========================================================================
-            this.CreateMap<ServiceCOResult.CurrentExchangeCourseResult, HandlerCOResult.ExchangeCourseResult>().ReverseMap();
+            this.CreateMap<ServiceCOResult.ExchangeCourseResult, HandlerCOResult.ExchangeCourseResult>().ReverseMap();
             this.CreateMap<ServiceCOResult.ClientWithdrawOperationResult, HandlerCOResult.CreateClientWithdrawOperationResult>().ReverseMap();
             this.CreateMap<ServiceCOResult.ClientOperationResult, HandlerCOResult.GetClientOperationResult>().ReverseMap();
 

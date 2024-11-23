@@ -11,20 +11,20 @@ namespace Service.Handlers
     public class ErrorHandler : IExceptionHandler
     {
 
-        private readonly RequestDelegate _next;
+        //private readonly RequestDelegate _next;
         private readonly ILogger<ErrorHandler> _logger;
         private readonly IAppCommonSettings _appCommonSettings;
 
-        public ErrorHandler(IAppCommonSettings appCommonSettings, RequestDelegate next, ILogger<ErrorHandler> logger)
+        //public ErrorHandler(IAppCommonSettings appCommonSettings, RequestDelegate next, ILogger<ErrorHandler> logger)
+        public ErrorHandler(IAppCommonSettings appCommonSettings, ILogger<ErrorHandler> logger)
         {
-            _next = next;
             _logger = logger;
             _appCommonSettings = appCommonSettings;
         }
 
         public async ValueTask<bool> TryHandleAsync(HttpContext httpContext, Exception exception, CancellationToken cancellationToken)
         {
-           
+
             if (exception is HandlerException ex)
             {
                 _logger.LogError(ex.Message, ex);

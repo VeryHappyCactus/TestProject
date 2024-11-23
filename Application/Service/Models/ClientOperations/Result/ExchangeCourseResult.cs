@@ -2,7 +2,7 @@
 
 namespace Service.Models.ClientOperations.Result
 {
-    public class CurrentExchangeCourseResult
+    public class ExchangeCourseResult
     {
         public CurrencyISONames CurrencyISOName { get; set; }
         public decimal SaleValue { get; set; }

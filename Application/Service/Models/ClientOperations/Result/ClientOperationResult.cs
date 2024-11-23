@@ -15,6 +15,6 @@ namespace Service.Models.ClientOperations.Result
         public CurrencyISONames? OperationCurrencyISOName { get; set; }
         public ClientOperationTypes ClientOperationType { get; set; }
         public ClientOperationStatuses ClientOperationStatus { get; set; }
-        public CurrentExchangeCourseResult[]? CurrentExchangeCourse { get; set; }
+        public ExchangeCourseResult? CurrentExchangeCourse { get; set; }
     }
 }

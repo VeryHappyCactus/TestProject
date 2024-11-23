@@ -26,16 +26,16 @@ $$
 						, c.CurrencyISOName					as OperationCurrencyISOName
 						, ces.SaleValue						as CurrencyCourseSaleValue
 						, ces.PurchaseValue					as CurrencyCoursePurchaseValue
-						, (SELECT json_agg(t) 
-							FROM (SELECT 
-										CurrencyISOName 
-										, SaleValue		
-										, PurchaseValue	
-										, CreationDate 
-									FROM CurrencyExchangeCourse tces
-									INNER JOIN Currency tc
-										ON tces.CurrencyId = tc.CurrencyId
-									WHERE tces.CurrencyExchangeCourseId = co.CurrencyExchangeCourseId) as t) as CurrentExchangeCourse
+						, CASE 
+							WHEN ces.CurrencyExchangeCourseId IS NOT NULL THEN
+								json_object(
+									'CurrencyISOName' : c.CurrencyISOName, 
+									'SaleValue' : ces.SaleValue,		
+									'PurchaseValue' : ces.PurchaseValue,	
+									'CreationDate' : ces.CreationDate 
+								) 
+							ELSE NULL
+							END as  CurrentExchangeCourse
 					FROM ClientOperation co
 					INNER JOIN ClientAccount ca
 						ON co.ClientAccountId = ca.ClientAccountId
@@ -73,16 +73,16 @@ $$
 						, c.CurrencyISOName					as OperationCurrencyISOName
 						, ces.SaleValue						as CurrencyCourseSaleValue
 						, ces.PurchaseValue					as CurrencyCoursePurchaseValue
-						, (SELECT json_agg(t) 
-							FROM (SELECT 
-										CurrencyISOName 
-										, SaleValue		
-										, PurchaseValue	
-										, CreationDate 
-									FROM CurrencyExchangeCourse tces
-									INNER JOIN Currency tc
-										ON tces.CurrencyId = tc.CurrencyId
-									WHERE tces.CurrencyExchangeCourseId = co.CurrencyExchangeCourseId) as t) as CurrentExchangeCourse 
+						, CASE 
+							WHEN ces.CurrencyExchangeCourseId IS NOT NULL THEN
+								json_object(
+									'CurrencyISOName' : c.CurrencyISOName, 
+									'SaleValue' : ces.SaleValue,		
+									'PurchaseValue' : ces.PurchaseValue,	
+									'CreationDate' : ces.CreationDate 
+								) 
+							ELSE NULL
+							END as  CurrentExchangeCourse
 					FROM ClientAccount ca
 					INNER JOIN Currency cac
 						ON ca.CurrencyId = cac.CurrencyId

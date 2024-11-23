@@ -8,7 +8,7 @@ AS
 $$
 BEGIN
 
-	IF (currentDate IS NOT NULL) THEN
+	IF (searchDate IS NOT NULL) THEN
 
 		RETURN QUERY WITH cteMaxDate AS
 		(
@@ -34,7 +34,7 @@ BEGIN
 		
 	END IF;
 
-	IF (currentDate IS NULL) THEN
+	IF (searchDate IS NULL) THEN
  		RETURN QUERY SELECT 
 		    c.CurrencyId
 			, c.CurrencyISOName

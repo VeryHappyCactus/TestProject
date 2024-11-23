@@ -1,3 +1,5 @@
+using Microsoft.AspNetCore.Diagnostics;
+using Microsoft.Extensions.DependencyInjection.Extensions;
 using Service.Configs;
 using Service.Handlers;
 
@@ -21,8 +23,11 @@ builder.Services.RegisterServices();
 builder.Services.RegisterTypes();
 builder.Services.AddExceptionHandler<ErrorHandler>();
 
+
+
 var app = builder.Build();
 
+app.UseExceptionHandler(_ => { });
 // Configure the HTTP request pipeline.
 //if (app.Environment.IsDevelopment())
 //{
