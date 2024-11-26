@@ -30,6 +30,8 @@ namespace ServiceLogic.Configs.Mapping
             CreateMap<CommonMessage.MessageCollection, IEnumerable<HandlerCOResult.GetClientOperationResult>>()
                 .ConvertUsing<MessageCollectionConverter<IEnumerable<HandlerCOResult.GetClientOperationResult>>>();
 
+            CreateMap<CommonMessage.MessageCollection, IEnumerable<HandlerCOResult.GetExchangeCourseResult>>()
+                .ConvertUsing<MessageCollectionConverter<IEnumerable<HandlerCOResult.GetExchangeCourseResult>>>();
         }
     }
 }

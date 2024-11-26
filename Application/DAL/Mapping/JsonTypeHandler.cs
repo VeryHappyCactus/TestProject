@@ -20,7 +20,6 @@ namespace DAL.Mapping
 
         public override void SetValue(IDbDataParameter parameter, T value)
         {
-            //parameter.Value = JsonSerializer.Serialize(value)!;
             throw new NotImplementedException();
         }
 

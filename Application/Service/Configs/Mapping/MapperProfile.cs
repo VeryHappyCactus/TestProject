@@ -10,6 +10,7 @@ using HandlerCOResult = ServiceLogic.Handlers.ClientOperations.Result;
 
 using HandlerCommonEnums = ServiceLogic.Handlers.Enums;
 using HandlerCommonRequest = ServiceLogic.Handlers.CommonModels.Request;
+using ServiceLogic.Handlers.ClientOperations.Request;
 
 namespace Service.Configs.Mapping
 {
@@ -23,18 +24,35 @@ namespace Service.Configs.Mapping
             this.CreateMap<ServiceCORequest.ClientWithdrawOperationRequest, HandlerCORequest.CreateClientWithdrawOperationRequest>().ReverseMap();
             this.CreateMap<ServiceCORequest.ClientOperationRequest, HandlerCORequest.GetClientOperationRequest>().ReverseMap();
             this.CreateMap<ServiceCORequest.ClientOperationsRequest, HandlerCORequest.GetClientOperationsRequest>().ReverseMap();
+            this.CreateMap<ServiceCORequest.ExchangeCourseRequest, HandlerCORequest.GetExchangeCourseRequest>().ReverseMap();
 
-            this.CreateMap<HandlerCORequest.GetClientOperationRequest, HandlerCommonRequest.DefaultRequest>()
-                .ConvertUsing(x => new HandlerCommonRequest.DefaultRequest
-                (x, x.GetType(), typeof(ServiceCOResult.ClientOperationResult), HandlerCommonEnums.CommonClientOperationTypes.GetClientOperation.ToString()));
 
-            this.CreateMap<HandlerCORequest.GetClientOperationsRequest, HandlerCommonRequest.DefaultRequest>()
-                .ConvertUsing(x => new HandlerCommonRequest.DefaultRequest
-                (x, x.GetType(), typeof(ServiceCOResult.ClientOperationResult), HandlerCommonEnums.CommonClientOperationTypes.GetClientOperations.ToString()));
+            this.CreateMap<ServiceCORequest.ClientOperationRequest, HandlerCommonRequest.DefaultRequest>()
+                .ConstructUsing((src, context) => new HandlerCommonRequest.DefaultRequest
+                (
+                    context.Mapper.Map<HandlerCORequest.GetClientOperationRequest>(src),
+                    typeof(HandlerCORequest.GetClientOperationRequest),
+                    typeof(HandlerCOResult.GetClientOperationResult),
+                    HandlerCommonEnums.CommonClientOperationTypes.GetClientOperation.ToString())
+                );
 
-            this.CreateMap<HandlerCORequest.GetExchangeCourseRequest, HandlerCommonRequest.DefaultRequest>()
-                .ConvertUsing(x => new HandlerCommonRequest.DefaultRequest
-                (x, x.GetType(), typeof(ServiceCOResult.ExchangeCourseResult), HandlerCommonEnums.CommonClientOperationTypes.GetExchangeCourse.ToString()));
+            this.CreateMap<ServiceCORequest.ClientOperationsRequest, HandlerCommonRequest.DefaultRequest>()
+                .ConstructUsing((src, context) => new HandlerCommonRequest.DefaultRequest
+                (
+                    context.Mapper.Map<HandlerCORequest.GetClientOperationsRequest>(src), 
+                    typeof(HandlerCORequest.GetClientOperationsRequest), 
+                    typeof(IEnumerable<HandlerCOResult.GetClientOperationResult>), 
+                    HandlerCommonEnums.CommonClientOperationTypes.GetClientOperations.ToString())
+                );
+                
+            this.CreateMap<ServiceCORequest.ExchangeCourseRequest, HandlerCommonRequest.DefaultRequest>()
+                .ConstructUsing((src, context) => new HandlerCommonRequest.DefaultRequest
+                (
+                    context.Mapper.Map<HandlerCORequest.GetExchangeCourseRequest>(src),
+                    typeof(HandlerCORequest.GetExchangeCourseRequest),
+                    typeof(IEnumerable<HandlerCOResult.GetExchangeCourseResult>),
+                    HandlerCommonEnums.CommonClientOperationTypes.GetExchangeCourse.ToString())
+                );
 
             //======Results==========================================================================
             this.CreateMap<ServiceCOResult.ExchangeCourseResult, HandlerCOResult.GetExchangeCourseResult>().ReverseMap();

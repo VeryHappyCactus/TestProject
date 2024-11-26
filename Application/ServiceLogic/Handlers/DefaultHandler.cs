@@ -39,8 +39,8 @@ namespace ServiceLogic.Handlers
             return new Dictionary<string, ObjectTypeModel>()
             {
                 [CommonClientOperationTypes.GetClientOperation.ToString()] = new ObjectTypeModel(typeof(ClientOperationRequestMessage), typeof(ClientOperationResultMessage)),
-                [CommonClientOperationTypes.GetClientOperations.ToString()] = new ObjectTypeModel(typeof(ClientOperationRequestMessage), typeof(IEnumerable<ClientOperationResultMessage>)),
-                [CommonClientOperationTypes.GetExchangeCourse.ToString()] = new ObjectTypeModel(typeof(ExchangeCourseRequestMessage), typeof(ExchangeCourseResultMessage)),
+                [CommonClientOperationTypes.GetClientOperations.ToString()] = new ObjectTypeModel(typeof(ClientOperationsRequestMessage), typeof(MessageCollection)),
+                [CommonClientOperationTypes.GetExchangeCourse.ToString()] = new ObjectTypeModel(typeof(ExchangeCourseRequestMessage), typeof(MessageCollection)),
             };
         }
 

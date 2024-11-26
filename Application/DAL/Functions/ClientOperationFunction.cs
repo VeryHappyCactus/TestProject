@@ -6,6 +6,7 @@ using Npgsql;
 using DAL.Enteties.ClientOperations.Request;
 using DAL.Enteties.ClientOperations.Result;
 using DAL.Functions.Interfaces;
+using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace DAL.Functions
 {
@@ -45,21 +46,23 @@ namespace DAL.Functions
 
         public async Task<IEnumerable<ExchangeCourseResult>?> GetExchangeCourseByDate(DateTime date)
         {
+            DynamicParameters parameters = new DynamicParameters();
+            parameters.Add("searchDate", date, System.Data.DbType.Date, System.Data.ParameterDirection.Input);
+
+            //param: new { searchDate = date.Date.ToShortDateString()
+
             IEnumerable<ExchangeCourseResult[]> result = await _dbConnection
-                .QueryAsync<ExchangeCourseResult[]>("select * from fn_GetCurrencyExchangeCourse(@searchDate)", param: new { searchDate = date });
+                .QueryAsync<ExchangeCourseResult[]>("select * from fn_GetCurrencyExchangeCourse(@searchDate)", parameters);
 
             return result?.FirstOrDefault();
         }
 
         public async Task<IEnumerable<ExchangeCourseResult>?> GetExchangeCourses()
         {
-            object result = await _dbConnection
-                .QueryAsync("select * from fn_GetCurrencyExchangeCourse()");
+            IEnumerable<ExchangeCourseResult[]> result = await _dbConnection
+                .QueryAsync<ExchangeCourseResult[]>("select * from fn_GetCurrencyExchangeCourse(null)");
 
-            IEnumerable<ExchangeCourseResult[]> result1 = await _dbConnection
-                .QueryAsync<ExchangeCourseResult[]>("select * from fn_GetCurrencyExchangeCourse()");
-
-            return null;  //result?.FirstOrDefault();
+            return result?.FirstOrDefault();
         }
     }
 }

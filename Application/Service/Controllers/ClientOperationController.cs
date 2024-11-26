@@ -70,7 +70,7 @@ namespace Service.Controllers
         [HttpGet("GetExchangeCourses")]
         public async Task<IEnumerable<ServiceCOResult.ExchangeCourseResult>?> GetExchangeCourseByDate()
         {
-            HandlerCommon.Request.DefaultRequest getOperation = _mapper.Map<HandlerCommon.Request.DefaultRequest>(new HandlerCORequest.GetExchangeCourseRequest());
+            HandlerCommon.Request.DefaultRequest getOperation = _mapper.Map<HandlerCommon.Request.DefaultRequest>(new ServiceCORequest.ExchangeCourseRequest());
             object? result = await _mediator.Send(getOperation);
 
             return _mapper.Map<IEnumerable<ServiceCOResult.ExchangeCourseResult>>(result);
