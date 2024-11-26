@@ -23,8 +23,8 @@ namespace Common.Queue
 
         public QueueConnectionFactory(QueueConnectionFactorySettings settings, JsonSerializerOptions jsonSerializerOption, ILogger logger)
         {
-            if (_jsonSerializerOption == null)
-                throw new ArgumentNullException(nameof(_jsonSerializerOption));
+            if (jsonSerializerOption == null)
+                throw new ArgumentNullException(nameof(jsonSerializerOption));
 
             if (settings == null)
                 throw new ArgumentNullException(nameof(settings));

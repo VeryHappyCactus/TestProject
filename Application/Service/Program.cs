@@ -18,9 +18,6 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.RegisterServices();
 builder.Services.RegisterTypes();
-builder.Services.AddExceptionHandler<GlobalErrorHandler>();
-
-
 
 var app = builder.Build();
 

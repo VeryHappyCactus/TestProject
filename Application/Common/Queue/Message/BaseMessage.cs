@@ -13,6 +13,8 @@ namespace Common.Queue.Message
     [JsonDerivedType(typeof(ClientOperationResultMessage), nameof(ClientOperationResultMessage))]
     [JsonDerivedType(typeof(ClientWithdrawOperationResultMessage), nameof(ClientWithdrawOperationResultMessage))]
     [JsonDerivedType(typeof(ClientWithdrawOperationRequestMessage), nameof(ClientWithdrawOperationRequestMessage))]
+    [JsonDerivedType(typeof(ExchangeCourseRequestMessage), nameof(ExchangeCourseRequestMessage))]
+    [JsonDerivedType(typeof(ExchangeCourseResultMessage), nameof(ExchangeCourseResultMessage))]
     public class BaseMessage
     {
     }

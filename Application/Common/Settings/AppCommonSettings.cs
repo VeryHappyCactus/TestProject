@@ -4,7 +4,7 @@ namespace Common.Settings
 {
     public class AppCommonSettings : IAppCommonSettings
     {
-        public JsonSettings JsonSettings { get; init; } = new JsonSettings();
+        public IJsonSettings JsonSettings { get; init; } = new JsonSettings();
     
     }
 }

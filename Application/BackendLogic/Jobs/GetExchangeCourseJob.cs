@@ -8,7 +8,7 @@ using DAL;
 
 namespace BackendLogic.Jobs
 {
-    internal class GetExchangeCourseJob : BaseJob<ExchangeCourseRequestMessage>
+    public class GetExchangeCourseJob : BaseJob<ExchangeCourseRequestMessage>
     {
         public GetExchangeCourseJob(IUnitOfWork unitOfWork, IMapper mapper)
            : base(unitOfWork, mapper)
@@ -24,7 +24,10 @@ namespace BackendLogic.Jobs
             else
                 result = await _unitOfWork.ClientOperationRepository.GetExchangeCourses();
 
-            return _mapper.Map<ClientOperationResultMessage>(result);
+            return new MessageCollection()
+            {
+                BaseMessages = _mapper.Map<ExchangeCourseResultMessage[]>(result)
+            };
         }
     }
 }

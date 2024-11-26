@@ -9,9 +9,6 @@ using CommonCOResult = Common.Queue.Message.ClientOperation.Result;
 using HandlerCORequest = ServiceLogic.Handlers.ClientOperations.Request;
 using HandlerCOResult = ServiceLogic.Handlers.ClientOperations.Result;
 
-//using HandlerCommonRequest = ServiceLogic.Handlers.CommonModels.Request;
-//using HandlerCommonResult = ServiceLogic.Handlers.CommonModels.Result;
-
 namespace ServiceLogic.Configs.Mapping
 {
     public class MapperProfile : Profile
@@ -23,6 +20,7 @@ namespace ServiceLogic.Configs.Mapping
             CreateMap<CommonCORequest.ClientWithdrawOperationRequestMessage, HandlerCORequest.CreateClientWithdrawOperationRequest>().ReverseMap();
             CreateMap<CommonCORequest.ClientOperationRequestMessage, HandlerCORequest.GetClientOperationRequest>().ReverseMap();
             CreateMap<CommonCORequest.ClientOperationsRequestMessage, HandlerCORequest.GetClientOperationsRequest>().ReverseMap();
+            CreateMap<CommonCORequest.ExchangeCourseRequestMessage, HandlerCORequest.GetExchangeCourseRequest>().ReverseMap();
 
             //======Results==========================================================================
             CreateMap<CommonCOResult.ExchangeCourseResultMessage, HandlerCOResult.GetExchangeCourseResult>().ReverseMap();
@@ -34,6 +32,4 @@ namespace ServiceLogic.Configs.Mapping
 
         }
     }
-
- 
 }

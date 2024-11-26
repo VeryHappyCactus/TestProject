@@ -4,11 +4,11 @@ namespace Common.Settings.Json
 {
     public class JsonSettings : IJsonSettings
     {
-        public JsonSerializerOptions JsonSerializerOption { get; init; }
+        public JsonSerializerOptions JsonSerializerOptions { get; init; }
 
         public JsonSettings()
         {
-            JsonSerializerOption = new JsonSerializerOptions()
+            JsonSerializerOptions = new JsonSerializerOptions()
             {
                 PropertyNameCaseInsensitive = true
             };

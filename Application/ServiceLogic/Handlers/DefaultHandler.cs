@@ -3,9 +3,10 @@
 using Common.Enums.Errors;
 using Common.Queue;
 using Common.Queue.Message;
+using Common.Queue.Message.ClientOperation.Request;
+using Common.Queue.Message.ClientOperation.Result;
 
 using ServiceLogic.Exceptions;
-using ServiceLogic.Handlers.ClientOperations.Result;
 using ServiceLogic.Handlers.CommonModels.Request;
 using ServiceLogic.Handlers.Enums;
 using ServiceLogic.Managers;
@@ -22,7 +23,7 @@ namespace ServiceLogic.Handlers
         private object? _result;
         private DefaultRequest? _request;
 
-        private Dictionary<string, Type> _dictionaryResultTypes;
+        private Dictionary<string, ObjectTypeModel> _dicObjectTypeModels;
 
         public DefaultHandler(IQueueManager queueManager, IMapper mapper)
            : base(queueManager, mapper)
@@ -30,19 +31,19 @@ namespace ServiceLogic.Handlers
             _eventWaitHandle = new EventWaitHandle(false, EventResetMode.ManualReset);
             _timeout = TimeSpan.FromSeconds(30_000);
 
-            _dictionaryResultTypes = InitResultTypes();
+            _dicObjectTypeModels = InitResultTypes();
         }
-      
-        private Dictionary<string, Type> InitResultTypes()
+
+        private Dictionary<string, ObjectTypeModel> InitResultTypes()
         {
-            return new Dictionary<string, Type>()
+            return new Dictionary<string, ObjectTypeModel>()
             {
-                [CommonClientOperationTypes.GetClientOperation.ToString()] = typeof(GetClientOperationResult),
-                [CommonClientOperationTypes.GetClientOperations.ToString()] = typeof(GetClientOperationResult),
-                [CommonClientOperationTypes.GetExchangeCourse.ToString()] = typeof(GetExchangeCourseResult)
+                [CommonClientOperationTypes.GetClientOperation.ToString()] = new ObjectTypeModel(typeof(ClientOperationRequestMessage), typeof(ClientOperationResultMessage)),
+                [CommonClientOperationTypes.GetClientOperations.ToString()] = new ObjectTypeModel(typeof(ClientOperationRequestMessage), typeof(IEnumerable<ClientOperationResultMessage>)),
+                [CommonClientOperationTypes.GetExchangeCourse.ToString()] = new ObjectTypeModel(typeof(ExchangeCourseRequestMessage), typeof(ExchangeCourseResultMessage)),
             };
         }
-        
+
         public override async Task<object?> Handle(DefaultRequest request, CancellationToken cancellationToken)
         {
             IQueueConsumer? consumer = null;
@@ -62,7 +63,7 @@ namespace ServiceLogic.Handlers
                     PublisherId = _key,
                     SessionId = _key,
                     RequestId = _key,
-                    Body = (BaseMessage)_mapper.Map(request.Model, request.Model.GetType(), request.RequestType)
+                    Body = (BaseMessage)_mapper.Map(request.Model, request.RequestType, _dicObjectTypeModels[_request!.Operation].MessageRequestType)
                 });
 
                 _eventWaitHandle.WaitOne(_timeout);
@@ -98,13 +99,25 @@ namespace ServiceLogic.Handlers
 
                     else
                     {
-                        _result = _mapper.Map(context.Body, _dictionaryResultTypes[_request!.Operation], _request!.ResultType);
+                        _result = _mapper.Map(context.Body, _dicObjectTypeModels[_request!.Operation].MessageResultType, _request!.ResultType);
                     }
                 }
             }
             finally
             {
                 _eventWaitHandle.Set();
+            }
+        }
+
+        private class ObjectTypeModel
+        {
+            public Type MessageRequestType { get; set; }
+            public Type MessageResultType { get; set; }
+
+            public ObjectTypeModel(Type messageRequestType, Type messageResultType)
+            {
+                MessageRequestType = messageRequestType;
+                MessageResultType = messageResultType;
             }
         }
     }

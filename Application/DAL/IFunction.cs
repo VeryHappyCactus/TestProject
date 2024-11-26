@@ -1,6 +1,6 @@
-﻿using DAL.Functions;
+﻿using DAL.Functions.Interfaces;
 
-namespace DAL.Contexts
+namespace DAL
 {
     public interface IFunction
     {

@@ -1,5 +1,4 @@
-﻿
-namespace DAL.Contexts
+﻿namespace DAL
 {
     public interface IDataContext
     {

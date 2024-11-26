@@ -2,7 +2,7 @@
 
 namespace Common.Queue.Message.ClientOperation.Result
 {
-    public class ExchangeCourseResultMessage
+    public class ExchangeCourseResultMessage : BaseMessage
     {
         public CurrencyISONames CurrencyISOName { get; set; }
         public decimal SaleValue { get; set; }

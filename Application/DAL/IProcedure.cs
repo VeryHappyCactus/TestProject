@@ -1,6 +1,6 @@
-﻿using DAL.StoredProcedures;
+﻿using DAL.StoredProcedures.Interfaces;
 
-namespace DAL.Contexts
+namespace DAL
 {
     public interface IProcedure
     {

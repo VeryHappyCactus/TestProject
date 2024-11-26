@@ -1,23 +1,23 @@
-﻿using Common.Secret.Settings;
+﻿using System.Text.Json;
+
+using Common.Secret.Settings;
 using Common.Settings;
-using System.Text.Json;
 
 namespace Common.Secret
 {
     public class SecretManager : ISecretManager
     {
         private readonly string? _keySecretSettings;
-        
-        private readonly IAppCommonSettings _appCommonSettings;
+        private readonly JsonSerializerOptions _jsonSerializerOptions;
 
         public SecretSettings SecretSettings { get; init; }
 
-        public SecretManager(IAppCommonSettings appCommonSettings)
+        public SecretManager(JsonSerializerOptions jsonSerializerOptions)
         {
-            if (appCommonSettings == null)
-                throw new ArgumentNullException(nameof(appCommonSettings));
+            if (jsonSerializerOptions == null)
+                throw new ArgumentNullException(nameof(jsonSerializerOptions));
 
-            _appCommonSettings = appCommonSettings;
+            _jsonSerializerOptions = jsonSerializerOptions;
             _keySecretSettings = Environment.GetEnvironmentVariable("keySecretSettings");
 
             SecretSettings = GetSecretSettings();
@@ -26,7 +26,7 @@ namespace Common.Secret
         public SecretSettings GetSecretSettings()
         {
             string json = File.ReadAllText(_keySecretSettings!);
-            return JsonSerializer.Deserialize<SecretSettings>(json, _appCommonSettings.JsonSettings.JsonSerializerOption)!;
+            return JsonSerializer.Deserialize<SecretSettings>(json, _jsonSerializerOptions)!;
         }
     }
 }

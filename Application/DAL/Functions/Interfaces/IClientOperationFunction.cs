@@ -1,7 +1,7 @@
 ﻿using DAL.Enteties.ClientOperations.Request;
 using DAL.Enteties.ClientOperations.Result;
 
-namespace DAL.Functions
+namespace DAL.Functions.Interfaces
 {
     public interface IClientOperationFunction
     {

@@ -1,4 +1,5 @@
 ﻿using DAL.Functions;
+using DAL.Functions.Interfaces;
 using Npgsql;
 
 namespace DAL.Contexts

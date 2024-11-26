@@ -4,6 +4,6 @@ namespace Common.Settings.Json
 {
     public interface IJsonSettings
     {
-        public JsonSerializerOptions JsonSerializerOption { get; init; }
+        public JsonSerializerOptions JsonSerializerOptions { get; init; }
     }
 }

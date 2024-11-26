@@ -1,5 +1,4 @@
-﻿using DAL.Contexts;
-using DAL.Enteties.ClientOperations.Request;
+﻿using DAL.Enteties.ClientOperations.Request;
 using DAL.Enteties.ClientOperations.Result;
 
 namespace DAL.Respositories

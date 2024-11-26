@@ -1,24 +1,28 @@
 ﻿using System.Net;
-
-using Common.Enums.Errors;
-using Common.Settings;
-
+using System.Text.Json;
 using Microsoft.AspNetCore.Diagnostics;
-using ServiceLogic.Exceptions;
 
+using ServiceLogic.Exceptions;
 using Service.Models.Errors;
+using Common.Enums.Errors;
 
 namespace Service.Handlers
 {
     public class GlobalErrorHandler : IExceptionHandler
     {
         private readonly ILogger<GlobalErrorHandler> _logger;
-        private readonly IAppCommonSettings _appCommonSettings;
+        private readonly JsonSerializerOptions _jsonSerializerOptions;
 
-        public GlobalErrorHandler(IAppCommonSettings appCommonSettings, ILogger<GlobalErrorHandler> logger)
+        public GlobalErrorHandler(JsonSerializerOptions jsonSerializerOptions, ILogger<GlobalErrorHandler> logger)
         {
+            if (jsonSerializerOptions == null)
+                throw new ArgumentNullException(nameof(jsonSerializerOptions));
+
+            if (logger == null)
+                throw new ArgumentNullException(nameof(logger));
+
             _logger = logger;
-            _appCommonSettings = appCommonSettings;
+            _jsonSerializerOptions = jsonSerializerOptions;
         }
 
         public async ValueTask<bool> TryHandleAsync(HttpContext httpContext, Exception exception, CancellationToken cancellationToken)
@@ -40,7 +44,7 @@ namespace Service.Handlers
                     Error = new OperationError(ex.ErrorClass, ex.ErrorCode, ex.Message)
                 };
 
-                await httpContext.Response.WriteAsJsonAsync(errorContext, _appCommonSettings.JsonSettings!.JsonSerializerOption!);
+                await httpContext.Response.WriteAsJsonAsync(errorContext, _jsonSerializerOptions);
 
                 return true;
             }
@@ -55,7 +59,7 @@ namespace Service.Handlers
                     Error = new OperationError(nameof(CommonErrorTypes), (int)CommonErrorTypes.Internal, "Internal server error")
                 };
 
-                await httpContext.Response.WriteAsJsonAsync(errorContext, _appCommonSettings.JsonSettings!.JsonSerializerOption!);
+                await httpContext.Response.WriteAsJsonAsync(errorContext, _jsonSerializerOptions);
             }
 
             return false;

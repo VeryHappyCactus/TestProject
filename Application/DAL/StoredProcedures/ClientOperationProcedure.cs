@@ -6,6 +6,7 @@ using NpgsqlTypes;
 
 using DAL.Enteties.ClientOperations.Request;
 using DAL.Enteties.ClientOperations.Result;
+using DAL.StoredProcedures.Interfaces;
 
 namespace DAL.StoredProcedures
 {

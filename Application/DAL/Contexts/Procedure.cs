@@ -1,6 +1,7 @@
 ﻿using Npgsql;
 
 using DAL.StoredProcedures;
+using DAL.StoredProcedures.Interfaces;
 
 namespace DAL.Contexts
 {

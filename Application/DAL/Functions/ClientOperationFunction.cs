@@ -5,6 +5,7 @@ using Npgsql;
 
 using DAL.Enteties.ClientOperations.Request;
 using DAL.Enteties.ClientOperations.Result;
+using DAL.Functions.Interfaces;
 
 namespace DAL.Functions
 {
@@ -52,10 +53,13 @@ namespace DAL.Functions
 
         public async Task<IEnumerable<ExchangeCourseResult>?> GetExchangeCourses()
         {
-            IEnumerable<ExchangeCourseResult[]> result = await _dbConnection
+            object result = await _dbConnection
+                .QueryAsync("select * from fn_GetCurrencyExchangeCourse()");
+
+            IEnumerable<ExchangeCourseResult[]> result1 = await _dbConnection
                 .QueryAsync<ExchangeCourseResult[]>("select * from fn_GetCurrencyExchangeCourse()");
 
-            return result?.FirstOrDefault();
+            return null;  //result?.FirstOrDefault();
         }
     }
 }

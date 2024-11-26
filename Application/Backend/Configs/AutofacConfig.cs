@@ -4,7 +4,6 @@ using NLog.Extensions.Logging;
 
 using Common.Queue;
 using Common.Settings;
-using Common.Settings.Json;
 using Common.Queue.Message.ClientOperation.Request;
 using Common.Secret;
 using Common.Queue.Consumer;
@@ -32,17 +31,12 @@ namespace Backend.Configs
                 .As<IAppCommonSettings>()
                 .SingleInstance();
 
-            containerBuilder.RegisterType<SecretManager>()
-                .As<ISecretManager>()
+            containerBuilder.Register<ISecretManager>(context => new SecretManager(context.Resolve<IAppCommonSettings>()!.JsonSettings!.JsonSerializerOptions!))
                 .SingleInstance();
 
             containerBuilder.Register<IDataContext>(context => new DataContext(
                 context.Resolve<ISecretManager>().SecretSettings!.DataBaseSettings!.ConnectionString!,
-                context.Resolve<IAppCommonSettings>().JsonSettings!.JsonSerializerOption!));
-
-            containerBuilder.RegisterType<DataContext>()
-                .As<IDataContext>()
-                .SingleInstance();
+                context.Resolve<IAppCommonSettings>().JsonSettings!.JsonSerializerOptions!));
 
             containerBuilder.RegisterType<ClientOperationRepository>()
                 .As<IClientOperationRepository>()
@@ -54,7 +48,7 @@ namespace Backend.Configs
             containerBuilder.Register<IQueueConnectionFactory>(context => new QueueConnectionFactory
             (
                 context.Resolve<ISecretManager>().SecretSettings!.ConnectionFactorySettings!,
-                context.Resolve<IAppCommonSettings>().JsonSettings!.JsonSerializerOption!,
+                context.Resolve<IAppCommonSettings>().JsonSettings!.JsonSerializerOptions!,
                 loggerFactory.CreateLogger(typeof(QueueConsumer).Name)
             )).SingleInstance();
 
@@ -84,8 +78,8 @@ namespace Backend.Configs
                 .Named<IJob>(nameof(ClientOperationsRequestMessage))
                 .SingleInstance();
 
-            containerBuilder.RegisterType<JsonSettings>()
-                .As<JsonSettings>()
+            containerBuilder.RegisterType<GetExchangeCourseJob>()
+                .Named<IJob>(nameof(ExchangeCourseRequestMessage))
                 .SingleInstance();
 
             containerBuilder.RegisterType<AppCommonSettings>()
@@ -97,6 +91,5 @@ namespace Backend.Configs
 
             return container;
         }
-
     }
 }
