@@ -1,7 +1,6 @@
 ﻿using DAL.Contexts;
 using DAL.Enteties.ClientOperations.Request;
 using DAL.Enteties.ClientOperations.Result;
-using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace DAL.Respositories
 {

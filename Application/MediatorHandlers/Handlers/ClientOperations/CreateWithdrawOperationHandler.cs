@@ -11,7 +11,7 @@ using MediatorHandlers.Managers;
 
 namespace MediatorHandlers.Handlers.ClientOperations
 {
-    public class CreateWithdrawOperationHandler :  BaseHandler<CreateClientWithdrawOperationRequest, CreateClientWithdrawOperationResult?, ClientWithdrawOperationRequestMessage>
+    public class CreateWithdrawOperationHandler : BaseRequestHandler<CreateClientWithdrawOperationRequest, CreateClientWithdrawOperationResult?, ClientWithdrawOperationRequestMessage>
     {
         public CreateWithdrawOperationHandler(IQueueManager queueManager, IMapper mapper)
             : base(queueManager, mapper) 
@@ -30,7 +30,7 @@ namespace MediatorHandlers.Handlers.ClientOperations
 
                     if (context.Body == null)
                     {
-                        throw new HandlerException(nameof(CommonErrorTypes), (int)CommonErrorTypes.Internal, "Result message body is empty", HandlerErrorTypes.Internal);
+                        throw new HandlerException(nameof(CommonErrorTypes), (int)CommonErrorTypes.BadRequest, "Result message body is empty", HandlerErrorTypes.RequestError);
                     }
 
                     if (context.Body is ErrorMessage errorMessage)
@@ -58,7 +58,7 @@ namespace MediatorHandlers.Handlers.ClientOperations
                 (
                     nameof(CommonErrorTypes), 
                     "Internal error", 
-                    HandlerErrorTypes.Internal
+                    HandlerErrorTypes.RequestError
                 ),
                 (int)ClientWithdrawOperationErrorTypes.AmountError => 
                 (
@@ -88,7 +88,7 @@ namespace MediatorHandlers.Handlers.ClientOperations
                 (
                     nameof(CommonErrorTypes), 
                     "Unknown error code", 
-                    HandlerErrorTypes.Internal
+                    HandlerErrorTypes.RequestError
                 )
             };
 

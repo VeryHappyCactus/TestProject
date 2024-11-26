@@ -1,6 +1,6 @@
 ﻿using AutoMapper;
 
-using MediatorHandlers.Handlers;
+using ServiceLogic.Handlers;
 
 namespace Service.Configs
 {
@@ -19,7 +19,7 @@ namespace Service.Configs
             var configuration = new MapperConfiguration(cfg =>
             {
                 cfg.AddMaps(typeof(Service.Configs.Mapping.MapperProfile).Assembly);
-                cfg.AddMaps(typeof(MediatorHandlers.Configs.Mapping.MapperProfile).Assembly);
+                cfg.AddMaps(typeof(ServiceLogic.Configs.Mapping.MapperProfile).Assembly);
             });
             return configuration.CreateMapper();
         }

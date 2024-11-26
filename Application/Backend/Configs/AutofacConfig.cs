@@ -7,15 +7,17 @@ using Common.Settings;
 using Common.Settings.Json;
 using Common.Queue.Message.ClientOperation.Request;
 using Common.Secret;
+using Common.Queue.Consumer;
 
 using DAL;
 using DAL.Contexts;
 using DAL.Respositories;
 
+using BackendLogic.Jobs;
+using BackendLogic.JobFactories;
+using BackendLogic;
+
 using Backend.Queue;
-using Backend.Jobs;
-using Backend.JobFactories;
-using Common.Queue.Consumer;
 
 namespace Backend.Configs
 {
@@ -34,6 +36,10 @@ namespace Backend.Configs
                 .As<ISecretManager>()
                 .SingleInstance();
 
+            containerBuilder.Register<IDataContext>(context => new DataContext(
+                context.Resolve<ISecretManager>().SecretSettings!.DataBaseSettings!.ConnectionString!,
+                context.Resolve<IAppCommonSettings>().JsonSettings!.JsonSerializerOption!));
+
             containerBuilder.RegisterType<DataContext>()
                 .As<IDataContext>()
                 .SingleInstance();
@@ -45,10 +51,13 @@ namespace Backend.Configs
             containerBuilder.RegisterType<UnitOfWork>()
                 .As<IUnitOfWork>();
 
-            containerBuilder.RegisterType<QueueConnectionFactory>()
-                .As<IQueueConnectionFactory>()
-                .WithParameter("logger", loggerFactory.CreateLogger(typeof(QueueConsumer).Name))
-                .SingleInstance();
+            containerBuilder.Register<IQueueConnectionFactory>(context => new QueueConnectionFactory
+            (
+                context.Resolve<ISecretManager>().SecretSettings!.ConnectionFactorySettings!,
+                context.Resolve<IAppCommonSettings>().JsonSettings!.JsonSerializerOption!,
+                loggerFactory.CreateLogger(typeof(QueueConsumer).Name)
+            )).SingleInstance();
+
 
             containerBuilder.RegisterType<ApplicationManager>()
                 .As<IApplicationManager>()

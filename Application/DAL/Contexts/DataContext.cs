@@ -1,11 +1,10 @@
-﻿using Npgsql;
-using Dapper;
+﻿using System.Text.Json;
 
-using Common.Settings;
+using Npgsql;
+using Dapper;
 
 using DAL.Mapping;
 using DAL.Enteties.ClientOperations.Result;
-using Common.Secret;
 
 namespace DAL.Contexts
 {
@@ -14,20 +13,20 @@ namespace DAL.Contexts
         public IProcedure Procedure { get; init; }
         public IFunction Function { get; init; }
 
-        public DataContext(ISecretManager secretManager, IAppCommonSettings appCommonSettings)
+        public DataContext(string connectionString, JsonSerializerOptions jsonSerializerOption)
         {
-            if (secretManager == null)
-                throw new ArgumentNullException(nameof(secretManager));
+            if (string.IsNullOrEmpty(connectionString))
+                throw new ArgumentNullException(nameof(connectionString));
 
-            if (appCommonSettings == null) 
-                throw new ArgumentNullException(nameof(appCommonSettings));
+            if (jsonSerializerOption == null) 
+                throw new ArgumentNullException(nameof(jsonSerializerOption));
 
-            SqlMapper.AddTypeHandler(new JsonTypeHandler<ClientOperationResult>(appCommonSettings));
-            SqlMapper.AddTypeHandler(new JsonTypeHandler<ClientOperationResult[]>(appCommonSettings));
-            SqlMapper.AddTypeHandler(new JsonTypeHandler<ExchangeCourseResult>(appCommonSettings));
-            SqlMapper.AddTypeHandler(new JsonTypeHandler<ExchangeCourseResult[]>(appCommonSettings));
+            SqlMapper.AddTypeHandler(new JsonTypeHandler<ClientOperationResult>(jsonSerializerOption));
+            SqlMapper.AddTypeHandler(new JsonTypeHandler<ClientOperationResult[]>(jsonSerializerOption));
+            SqlMapper.AddTypeHandler(new JsonTypeHandler<ExchangeCourseResult>(jsonSerializerOption));
+            SqlMapper.AddTypeHandler(new JsonTypeHandler<ExchangeCourseResult[]>(jsonSerializerOption));
 
-            NpgsqlConnection dbConnection = new NpgsqlConnection(secretManager.SecretSettings.DataBaseSettings!.ConnectionString!);
+            NpgsqlConnection dbConnection = new NpgsqlConnection(connectionString);
 
             Procedure = new Procedure(dbConnection);
             Function = new Function(dbConnection);

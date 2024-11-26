@@ -8,7 +8,6 @@ using RabbitMQ.Client.Events;
 
 using Common.Queue.Consumer.Delegates;
 using Common.Queue.Message;
-using Common.Settings;
 
 namespace Common.Queue.Consumer
 {
@@ -16,25 +15,25 @@ namespace Common.Queue.Consumer
     {
         private readonly AsyncEventingBasicConsumer _eventConsumer;
         private readonly ConcurrentDictionary<string, AsyncMessageEventHadler> _eventDictionary;
-        private readonly IAppCommonSettings _appCommonSettings;
+        private readonly JsonSerializerOptions _jsonSerializerOption;
         private readonly ILogger _logger;
 
         private event AsyncMessageEventHadler? _messageEventHadler;
 
-        public QueueConsumer(AsyncEventingBasicConsumer eventConsumer, IAppCommonSettings appCommonSettings, ILogger logger) 
+        public QueueConsumer(AsyncEventingBasicConsumer eventConsumer, JsonSerializerOptions jsonSerializerOption, ILogger logger) 
         {
             if (eventConsumer == null)
                 throw new ArgumentNullException(nameof(eventConsumer));
 
-            if (appCommonSettings == null)
-                throw new ArgumentNullException(nameof(appCommonSettings));
+            if (jsonSerializerOption == null)
+                throw new ArgumentNullException(nameof(jsonSerializerOption));
 
             if (logger == null)
                 throw new ArgumentNullException(nameof(logger));
 
             _eventConsumer = eventConsumer;
             _eventDictionary = new ConcurrentDictionary<string, AsyncMessageEventHadler>();
-            _appCommonSettings = appCommonSettings;
+            _jsonSerializerOption = jsonSerializerOption;
             _logger = logger;
         }
     
@@ -59,7 +58,7 @@ namespace Common.Queue.Consumer
                     return;
                 }
 
-                MessageContext? messageContext = JsonSerializer.Deserialize<MessageContext>(queueMessage!, _appCommonSettings.JsonSettings.JsonSerializerOption);
+                MessageContext? messageContext = JsonSerializer.Deserialize<MessageContext>(queueMessage!, _jsonSerializerOption);
 
                 if (messageContext != null)
                 {

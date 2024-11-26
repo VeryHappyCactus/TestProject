@@ -1,7 +1,4 @@
-﻿using Common.Queue.Consumer;
-using Common.Queue.Producer;
-
-namespace Common.Queue
+﻿namespace Common.Queue
 {
     public interface IQueueConnectionFactory
     {

@@ -3,13 +3,13 @@ using Microsoft.AspNetCore.Mvc;
 using AutoMapper;
 using MediatR;
 
-using HandlerRequest = MediatorHandlers.Handlers.ClientOperations.Request;
-using HandlerResult = MediatorHandlers.Handlers.ClientOperations.Result;
+using HandlerCommon = ServiceLogic.Handlers.CommonModels;
+using HandlerCORequest = ServiceLogic.Handlers.ClientOperations.Request;
+using HandlerCOResult = ServiceLogic.Handlers.ClientOperations.Result;
 
 using ServiceModels = Service.Models;
-using ServiceRequest = Service.Models.ClientOperations.Request;
-using ServiceResult = Service.Models.ClientOperations.Result;
-
+using ServiceCORequest = Service.Models.ClientOperations.Request;
+using ServiceCOResult = Service.Models.ClientOperations.Result;
 
 namespace Service.Controllers
 {
@@ -30,53 +30,50 @@ namespace Service.Controllers
         }
 
         [HttpPost("CreateClientWithdrawOperation")]
-        public async Task<ServiceResult.ClientWithdrawOperationResult> CreateClientWithdrawOperation(ServiceRequest.ClientWithdrawOperationRequest request)
+        public async Task<ServiceCOResult.ClientWithdrawOperationResult> CreateClientWithdrawOperation(ServiceCORequest.ClientWithdrawOperationRequest request)
         {
-            HandlerRequest.CreateClientWithdrawOperationRequest createOperation = _mapper.Map<HandlerRequest.CreateClientWithdrawOperationRequest>(request);
-            HandlerResult.CreateClientWithdrawOperationResult? result = await _mediator.Send(createOperation);
+            HandlerCORequest.CreateClientWithdrawOperationRequest createOperation = _mapper.Map<HandlerCORequest.CreateClientWithdrawOperationRequest>(request);
+            HandlerCOResult.CreateClientWithdrawOperationResult? result = await _mediator.Send(createOperation);
             
-            return _mapper.Map<ServiceResult.ClientWithdrawOperationResult>(result);
+            return _mapper.Map<ServiceCOResult.ClientWithdrawOperationResult>(result);
         }
 
         [HttpPost("GetClientOperation")]
-        public async Task<ServiceResult.ClientOperationResult> GetClientOperation(ServiceRequest.ClientOperationRequest request)
+        public async Task<ServiceCOResult.ClientOperationResult> GetClientOperation(ServiceCORequest.ClientOperationRequest request)
         {
 
-            HandlerRequest.GetClientOperationRequest getOperation = _mapper.Map<HandlerRequest.GetClientOperationRequest>(request);
-            HandlerResult.GetClientOperationResult? result = await _mediator.Send(getOperation);
+            HandlerCommon.Request.DefaultRequest getOperation = _mapper.Map<HandlerCommon.Request.DefaultRequest>(request);
+            object? result = await _mediator.Send(getOperation);
 
-            return _mapper.Map<ServiceResult.ClientOperationResult>(result);
+            return _mapper.Map<ServiceCOResult.ClientOperationResult>(result);
         }
 
         [HttpPost("GetClientOperations")]
-        public async Task<IEnumerable<ServiceResult.ClientOperationResult>> GetClientOperations(ServiceRequest.ClientOperationsRequest request)
+        public async Task<IEnumerable<ServiceCOResult.ClientOperationResult>> GetClientOperations(ServiceCORequest.ClientOperationsRequest request)
         {
 
-            HandlerRequest.GetClientOperationsRequest getOperations = _mapper.Map<HandlerRequest.GetClientOperationsRequest>(request);
-            IEnumerable<HandlerResult.GetClientOperationResult>? result = await _mediator.Send(getOperations);
+            HandlerCommon.Request.DefaultRequest getOperation = _mapper.Map<HandlerCommon.Request.DefaultRequest>(request);
+            object? result = await _mediator.Send(getOperation);
 
-            return _mapper.Map<IEnumerable<ServiceResult.ClientOperationResult>>(result);
+            return _mapper.Map<IEnumerable<ServiceCOResult.ClientOperationResult>>(result);
         }
 
         [HttpPost("GetExchangeCourseByDate")]
-        public async Task<IEnumerable<ServiceResult.ExchangeCourseResult>?> GetExchangeCourseByDate(ServiceRequest.ExchangeCourseRequest request)
+        public async Task<IEnumerable<ServiceCOResult.ExchangeCourseResult>?> GetExchangeCourseByDate(ServiceCORequest.ExchangeCourseRequest request)
         {
+            HandlerCommon.Request.DefaultRequest getOperation = _mapper.Map<HandlerCommon.Request.DefaultRequest>(request);
+            object? result = await _mediator.Send(getOperation);
 
-            HandlerRequest.GetExchangeCourseRequest getOperations = _mapper.Map<HandlerRequest.GetExchangeCourseRequest>(request);
-            IEnumerable<HandlerResult.ExchangeCourseResult>? result = await _mediator.Send(getOperations);
-
-            return _mapper.Map<IEnumerable<ServiceResult.ExchangeCourseResult>>(result);
+            return _mapper.Map<IEnumerable<ServiceCOResult.ExchangeCourseResult>>(result);
         }
 
         [HttpGet("GetExchangeCourses")]
-        public async Task<IEnumerable<ServiceResult.ExchangeCourseResult>?> GetExchangeCourseByDate()
+        public async Task<IEnumerable<ServiceCOResult.ExchangeCourseResult>?> GetExchangeCourseByDate()
         {
+            HandlerCommon.Request.DefaultRequest getOperation = _mapper.Map<HandlerCommon.Request.DefaultRequest>(new HandlerCORequest.GetExchangeCourseRequest());
+            object? result = await _mediator.Send(getOperation);
 
-            HandlerRequest.GetExchangeCourseRequest getOperations = _mapper.Map<HandlerRequest.GetExchangeCourseRequest>(new HandlerRequest.GetExchangeCourseRequest());
-            IEnumerable<HandlerResult.ExchangeCourseResult>? result = await _mediator.Send(getOperations);
-
-            return _mapper.Map<IEnumerable<ServiceResult.ExchangeCourseResult>>(result);
+            return _mapper.Map<IEnumerable<ServiceCOResult.ExchangeCourseResult>>(result);
         }
-
     }
 }

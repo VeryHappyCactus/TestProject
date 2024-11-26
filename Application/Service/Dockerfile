@@ -13,7 +13,7 @@ ARG BUILD_CONFIGURATION=Release
 WORKDIR /src
 #COPY ["Service/Service.csproj", "Service/"]
 #COPY ["Common/Common.csproj", "Common/"]
-#COPY ["MediatorHandlers/MediatorHandlers.csproj", "MediatorHandlers/"]
+#COPY ["ServiceLogic/ServiceLogic.csproj", "ServiceLogic/"]
 RUN dotnet restore "Service/Service.csproj"
 COPY . .
 WORKDIR "/src/Service"

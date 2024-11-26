@@ -1,6 +1,4 @@
-﻿using Backend.Jobs;
-
-namespace Backend.JobFactories
+﻿namespace BackendLogic.JobFactories
 {
     public interface IJobFactory
     {

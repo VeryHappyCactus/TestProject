@@ -15,6 +15,6 @@ namespace MediatorHandlers.Handlers.ClientOperations.Result
         public CurrencyISONames? OperationCurrencyISOName { get; set; }
         public ClientOperationTypes ClientOperationType { get; set; }
         public ClientOperationStatuses ClientOperationStatus { get; set; }
-        public ExchangeCourseResult? CurrentExchangeCourse { get; set; }
+        public GetExchangeCourseResult? CurrentExchangeCourse { get; set; }
     }
 }

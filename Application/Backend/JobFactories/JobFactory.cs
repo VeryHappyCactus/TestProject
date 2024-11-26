@@ -1,8 +1,6 @@
 ﻿using Autofac;
 
-using Backend.Jobs;
-
-namespace Backend.JobFactories
+namespace BackendLogic.JobFactories
 {
     public class JobFactory : IJobFactory
     {

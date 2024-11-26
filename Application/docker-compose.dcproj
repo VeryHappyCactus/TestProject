@@ -10,6 +10,7 @@
     <DockerServiceName>service</DockerServiceName>
   </PropertyGroup>
   <ItemGroup>
+    <None Remove="DockerFiles\SQLScripts\**" />
     <None Remove="DockerFiles\SQLSripts\**" />
     <None Remove="SQLScripts\**" />
   </ItemGroup>
@@ -18,10 +19,5 @@
     <None Include="docker-compose.yml" />
     <None Include="DockerFiles\BackendSecret.json" />
     <None Include="DockerFiles\ServiceSecret.json" />
-    <None Include="DockerFiles\SQLScripts\01_Tables.sql" />
-    <None Include="DockerFiles\SQLScripts\02_Data.sql" />
-    <None Include="DockerFiles\SQLScripts\03_FN1.sql" />
-    <None Include="DockerFiles\SQLScripts\04_FN2.sql" />
-    <None Include="DockerFiles\SQLScripts\05_SP.sql" />
   </ItemGroup>
 </Project>

@@ -19,7 +19,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Common\Common.csproj" />
-    <ProjectReference Include="..\MediatorHandlers\MediatorHandlers.csproj" />
+    <ProjectReference Include="..\ServiceLogic\ServiceLogic.csproj" />
   </ItemGroup>
 
   <ItemGroup>

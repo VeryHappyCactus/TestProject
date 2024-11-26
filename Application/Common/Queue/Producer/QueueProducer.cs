@@ -11,17 +11,19 @@ namespace Common.Queue.Producer
     public class QueueProducer : IQueueProducer
     {
         private readonly IChannel _channel;
-        private readonly IAppCommonSettings _appCommonSettings;
+        
         private readonly string _exchangeName;
         private readonly string _routingKey;
 
-        public QueueProducer(IChannel channel, string exchangeName, string routingKey, IAppCommonSettings appCommonSettings) 
+        private readonly JsonSerializerOptions _jsonSerializerOption;
+
+        public QueueProducer(IChannel channel, string exchangeName, string routingKey, JsonSerializerOptions jsonSerializerOption) 
         {
             if (channel == null)
                 throw new ArgumentNullException(nameof(channel));
 
-            if (appCommonSettings == null)
-                throw new ArgumentNullException(nameof(appCommonSettings));
+            if (jsonSerializerOption == null)
+                throw new ArgumentNullException(nameof(jsonSerializerOption));
 
             if (exchangeName == null)
                 throw new ArgumentNullException(nameof(exchangeName));
@@ -32,7 +34,7 @@ namespace Common.Queue.Producer
             _channel = channel;
             _exchangeName = exchangeName;
             _routingKey = routingKey;
-            _appCommonSettings = appCommonSettings;
+            _jsonSerializerOption = jsonSerializerOption;
         }
 
         public async Task PublishMessageAsync(MessageContext context)
@@ -42,7 +44,7 @@ namespace Common.Queue.Producer
 
         public async Task PublishMessageAsync(string exchangeName, string routingKey, MessageContext context)
         {
-            string json = JsonSerializer.Serialize(context, _appCommonSettings.JsonSettings.JsonSerializerOption);
+            string json = JsonSerializer.Serialize(context, _jsonSerializerOption);
             byte[] data = Encoding.UTF8.GetBytes(json);
             await _channel.BasicPublishAsync(exchange: exchangeName, routingKey: routingKey, body: data);
         }

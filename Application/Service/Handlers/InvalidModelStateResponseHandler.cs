@@ -1,7 +1,9 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using System.Net;
+
+using Microsoft.AspNetCore.Mvc;
+
 using Service.Models.Errors;
-using Service.Validation;
-using System.Net;
+using Service.ObjectResults;
 
 namespace Service.Handlers
 {
@@ -20,7 +22,7 @@ namespace Service.Handlers
                 }
             };
             
-            return new ValidationFailedResult(errorContext, (int)HttpStatusCode.BadRequest);
+            return new ActionObjectResult(errorContext, (int)HttpStatusCode.BadRequest);
         }
     }
 }

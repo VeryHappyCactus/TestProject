@@ -1,11 +1,13 @@
-﻿using RabbitMQ.Client;
+﻿using System.Text.Json;
+
+using Microsoft.Extensions.Logging;
+
+using RabbitMQ.Client;
 using RabbitMQ.Client.Events;
 
 using Common.Queue.Consumer;
 using Common.Queue.Producer;
-using Common.Settings;
-using Common.Secret;
-using Microsoft.Extensions.Logging;
+using Common.Queue.Settings;
 
 namespace Common.Queue
 {
@@ -14,42 +16,43 @@ namespace Common.Queue
         private readonly ConnectionFactory _connectionFactoryConsumer;
         private readonly ConnectionFactory _connectionFactoryProducer;
 
-        private readonly IAppCommonSettings _appCommonSettings;
-        private readonly ISecretManager _secretManager;
-        private readonly ILogger _logger;
-     
-        public QueueConnectionFactory(ISecretManager secretManager, IAppCommonSettings appCommonSettings, ILogger logger)
-        {
-            if (appCommonSettings == null)
-                throw new ArgumentNullException(nameof(appCommonSettings));
+        private readonly JsonSerializerOptions _jsonSerializerOption;
+        private readonly QueueConnectionFactorySettings _settings;
 
-            if (secretManager == null)
-                throw new ArgumentNullException(nameof(secretManager));
+        private readonly ILogger _logger;
+
+        public QueueConnectionFactory(QueueConnectionFactorySettings settings, JsonSerializerOptions jsonSerializerOption, ILogger logger)
+        {
+            if (_jsonSerializerOption == null)
+                throw new ArgumentNullException(nameof(_jsonSerializerOption));
+
+            if (settings == null)
+                throw new ArgumentNullException(nameof(settings));
 
             if (logger == null)
                 throw new ArgumentNullException(nameof(logger));
 
             _connectionFactoryConsumer = new ConnectionFactory 
             { 
-                HostName = secretManager.SecretSettings.ConnectionFactorySettings!.ConsumerConncetionSettings!.HostName!, 
-                Port = secretManager.SecretSettings.ConnectionFactorySettings!.ConsumerConncetionSettings!.Port, 
-                UserName = secretManager.SecretSettings.ConnectionFactorySettings!.ConsumerConncetionSettings!.UserName!, 
-                Password = secretManager.SecretSettings.ConnectionFactorySettings!.ConsumerConncetionSettings!.Password!
+                HostName = settings.ConsumerConncetionSettings!.HostName!, 
+                Port = settings.ConsumerConncetionSettings!.Port, 
+                UserName = settings.ConsumerConncetionSettings!.UserName!, 
+                Password = settings.ConsumerConncetionSettings!.Password!
             };
             
             _connectionFactoryProducer = new ConnectionFactory 
             { 
-                HostName = secretManager.SecretSettings.ConnectionFactorySettings!.ProducerConnectionSettings!.HostName!, 
-                Port = secretManager.SecretSettings.ConnectionFactorySettings!.ProducerConnectionSettings!.Port, 
-                UserName = secretManager.SecretSettings.ConnectionFactorySettings!.ProducerConnectionSettings!.UserName!, 
-                Password = secretManager.SecretSettings.ConnectionFactorySettings!.ProducerConnectionSettings!.Password!
+                HostName = settings.ProducerConnectionSettings!.HostName!, 
+                Port = settings.ProducerConnectionSettings!.Port, 
+                UserName = settings.ProducerConnectionSettings!.UserName!, 
+                Password = settings.ProducerConnectionSettings!.Password!
            };
             
             _connectionFactoryConsumer.AutomaticRecoveryEnabled = true;
             _connectionFactoryProducer.AutomaticRecoveryEnabled = true;
 
-            _appCommonSettings = appCommonSettings;
-            _secretManager = secretManager;
+            _jsonSerializerOption = jsonSerializerOption;
+            _settings = settings;
             _logger = logger;
         }
 
@@ -57,9 +60,9 @@ namespace Common.Queue
         {
             return await CreateQueueConsumerAsync
                 (
-                    queueName: _secretManager.SecretSettings!.ConnectionFactorySettings!.ConsumerSettings!.QueueName!,
-                    exchangeName: _secretManager.SecretSettings!.ConnectionFactorySettings!.ConsumerSettings!.ExchangeName!,
-                    routingKey: _secretManager.SecretSettings!.ConnectionFactorySettings!.ConsumerSettings!.RoutingKey!,
+                    queueName: _settings.ConsumerSettings!.QueueName!,
+                    exchangeName: _settings.ConsumerSettings!.ExchangeName!,
+                    routingKey: _settings.ConsumerSettings!.RoutingKey!,
                     isAutoAck: true
                 );
         }
@@ -68,12 +71,12 @@ namespace Common.Queue
         {
             return await CreateQueueProducerAsync
                 (
-                    queueName: _secretManager.SecretSettings!.ConnectionFactorySettings!.ProducerSettings!.QueueName!,
-                    exchangeName: _secretManager.SecretSettings!.ConnectionFactorySettings!.ProducerSettings!.ExchangeName!,
-                    routingKey: _secretManager.SecretSettings!.ConnectionFactorySettings!.ProducerSettings!.RoutingKey!
+                    queueName: _settings.ProducerSettings!.QueueName!,
+                    exchangeName: _settings.ProducerSettings!.ExchangeName!,
+                    routingKey: _settings.ProducerSettings!.RoutingKey!
                 );
         }
-
+        
         public async Task<IQueueConsumer> CreateQueueConsumerAsync(string queueName, string exchangeName, string routingKey, bool isAutoAck = true)
         {
             IConnection connection = await _connectionFactoryConsumer.CreateConnectionAsync();
@@ -92,7 +95,7 @@ namespace Common.Queue
                                  autoAck: isAutoAck,
                                  consumer: consumer);
 
-            return new QueueConsumer(consumer, _appCommonSettings, _logger);
+            return new QueueConsumer(consumer, _jsonSerializerOption, _logger);
         }
 
         public async Task<IQueueProducer> CreateQueueProducerAsync(string queueName, string exchangeName, string routingKey)
@@ -107,7 +110,7 @@ namespace Common.Queue
                               exchange: exchangeName,
                               routingKey: routingKey);
 
-            return new QueueProducer(channel, exchangeName, routingKey, _appCommonSettings);
+            return new QueueProducer(channel, exchangeName, routingKey, _jsonSerializerOption);
         }
     }
 }

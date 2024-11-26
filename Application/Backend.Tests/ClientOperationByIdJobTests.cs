@@ -1,9 +1,6 @@
 using AutoMapper;
 using Moq;
 
-using Backend.Configs;
-using Backend.Jobs;
-
 using Common.Queue.Message;
 using Common.Queue.Message.ClientOperation.Request;
 using Common.Queue.Message.ClientOperation.Result;
@@ -12,11 +9,13 @@ using DAL;
 using DAL.Enteties.ClientOperations.Result;
 using DAL.Respositories;
 
-namespace Backend.Tests
+using BackendLogic.Jobs;
+
+namespace BackendLogic.Tests
 {
     public class ClientOperationByIdJobTests
     {
-        private readonly IMapper _mapper = AutoMapperConfig.GetMapper();
+        private readonly IMapper _mapper = new MapperConfiguration(cfg => cfg.AddMaps(typeof(BackendLogic.Configs.Mapping.MapperProfile).Assembly)).CreateMapper();
 
         [Fact]
         public void Thtow_Exceptions_When_Constructor_Arguments_Is_Null()

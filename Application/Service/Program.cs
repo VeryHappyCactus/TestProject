@@ -1,5 +1,3 @@
-using Microsoft.AspNetCore.Diagnostics;
-using Microsoft.Extensions.DependencyInjection.Extensions;
 using Service.Configs;
 using Service.Handlers;
 
@@ -10,7 +8,6 @@ builder.Logging.AddConsole();
 
 // Add services to the container.
 
-//builder.Services.AddControllers();
 builder.Services.AddControllers().ConfigureApiBehaviorOptions(options =>
 {
     options.InvalidModelStateResponseFactory = InvalidModelStateResponseHandler.GetErrorResponse;
@@ -21,7 +18,7 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.RegisterServices();
 builder.Services.RegisterTypes();
-builder.Services.AddExceptionHandler<ErrorHandler>();
+builder.Services.AddExceptionHandler<GlobalErrorHandler>();
 
 
 

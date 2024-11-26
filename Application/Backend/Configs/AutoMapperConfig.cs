@@ -6,7 +6,7 @@ namespace Backend.Configs
     {
         public static IMapper GetMapper()
         {
-            var configuration = new MapperConfiguration(cfg => cfg.AddMaps(typeof(Program).Assembly));
+            var configuration = new MapperConfiguration(cfg => cfg.AddMaps(typeof(BackendLogic.Configs.Mapping.MapperProfile).Assembly));
             return configuration.CreateMapper();
         }
     }

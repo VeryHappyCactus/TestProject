@@ -19,8 +19,8 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\BackendLogic\BackendLogic.csproj" />
     <ProjectReference Include="..\Common\Common.csproj" />
-    <ProjectReference Include="..\DAL\DAL.csproj" />
   </ItemGroup>
 
   <ItemGroup>

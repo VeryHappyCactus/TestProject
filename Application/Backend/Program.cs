@@ -1,11 +1,11 @@
-﻿using ILogger = Microsoft.Extensions.Logging.ILogger;
-
+﻿using Microsoft.Extensions.Logging;
+using NLog.Extensions.Logging;
 using Autofac;
 
 using Backend.Configs;
 using Backend.Queue;
-using NLog.Extensions.Logging;
-using Microsoft.Extensions.Logging;
+
+using ILogger = Microsoft.Extensions.Logging.ILogger;
 
 namespace Backend
 {

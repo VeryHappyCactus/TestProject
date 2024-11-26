@@ -47,7 +47,7 @@ $$
 			VALUES (gen_random_uuid(), 'Евро', 'EUR') RETURNING CurrencyId INTO tCurrencyEURId;
 
 		INSERT INTO ClientAccount (ClientAccountId, ClientId, CurrencyId, AccountTotalAmount)
-			VALUES (gen_random_uuid(), tClientId, tCurrencyUAHId, 5000);
+			VALUES (gen_random_uuid(), tClientId, tCurrencyUAHId, 5000000);
 
 		INSERT INTO CurrencyExchangeCourse (CurrencyExchangeCourseId, CurrencyId, SaleValue, PurchaseValue, CreationDate)
 			VALUES (gen_random_uuid(), tCurrencyUSDId, 41.699, 41.237, tTimestamp);

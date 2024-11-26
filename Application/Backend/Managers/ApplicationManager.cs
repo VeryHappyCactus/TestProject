@@ -1,13 +1,11 @@
 ﻿using Microsoft.Extensions.Logging;
 
 using Common.Queue;
-using Common.Queue.Consumer;
 using Common.Queue.Message;
-using Common.Queue.Producer;
 using Common.Enums.Errors;
 
-using Backend.JobFactories;
-using Backend.Jobs;
+using BackendLogic.JobFactories;
+using BackendLogic;
 
 namespace Backend.Queue
 {
