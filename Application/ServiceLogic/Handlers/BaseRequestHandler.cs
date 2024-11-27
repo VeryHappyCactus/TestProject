@@ -59,7 +59,7 @@ namespace ServiceLogic.Handlers
                     {
                         if (_handlerStatus.HasValue && _handlerStatus == MessageEventHandlerStatuses.Error && _exception != null)
                             throw _exception;
-                        else if (!_handlerStatus.HasValue && _handlerStatus != MessageEventHandlerStatuses.Success)
+                        else if (!_handlerStatus.HasValue)
                             throw new HandlerException(nameof(CommonErrorTypes), (int)CommonErrorTypes.BadRequest, "Timeout exception, result did not get in time", HandlerErrorTypes.RequestError);
                     }
                 }
