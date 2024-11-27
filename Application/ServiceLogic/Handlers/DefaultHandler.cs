@@ -22,6 +22,8 @@ namespace ServiceLogic.Handlers
 
         private object? _result;
         private DefaultRequest? _request;
+        private Exception? _exception;
+        private MessageEventHandlerStatuses? _handlerStatus;
 
         private Dictionary<string, ObjectTypeModel> _dicObjectTypeModels;
 
@@ -29,7 +31,7 @@ namespace ServiceLogic.Handlers
            : base(queueManager, mapper)
         {
             _eventWaitHandle = new EventWaitHandle(false, EventResetMode.ManualReset);
-            _timeout = TimeSpan.FromSeconds(30_000);
+            _timeout = TimeSpan.FromSeconds(30);
 
             _dicObjectTypeModels = InitResultTypes();
         }
@@ -72,7 +74,10 @@ namespace ServiceLogic.Handlers
                 {
                     if (_result == null)
                     {
-                        throw new HandlerException(nameof(CommonErrorTypes), (int)CommonErrorTypes.BadRequest, "Timeout exception, result did not get in time", HandlerErrorTypes.RequestError);
+                        if (_handlerStatus.HasValue && _handlerStatus == MessageEventHandlerStatuses.Error && _exception != null)
+                            throw _exception;
+                        else if (!_handlerStatus.HasValue && _handlerStatus != MessageEventHandlerStatuses.Success)
+                            throw new HandlerException(nameof(CommonErrorTypes), (int)CommonErrorTypes.BadRequest, "Timeout exception, result did not get in time", HandlerErrorTypes.RequestError);
                     }
                 }
 
@@ -93,12 +98,17 @@ namespace ServiceLogic.Handlers
                 lock (_lock)
                 {
                     if (_result != null)
+                        return;
+                    
+                    if (context.Body == null)
                     {
-                        throw new HandlerException(nameof(CommonErrorTypes), (int)CommonErrorTypes.BadRequest, "Result message body is empty", HandlerErrorTypes.RequestError);
+                        _handlerStatus = MessageEventHandlerStatuses.Error;
+                        _exception = new HandlerException(nameof(CommonErrorTypes), (int)CommonErrorTypes.BadRequest, "Result message body is empty", HandlerErrorTypes.RequestError);
+                        
                     }
-
                     else
                     {
+                        _handlerStatus = MessageEventHandlerStatuses.Success;
                         _result = _mapper.Map(context.Body, _dicObjectTypeModels[_request!.Operation].MessageResultType, _request!.ResultType);
                     }
                 }

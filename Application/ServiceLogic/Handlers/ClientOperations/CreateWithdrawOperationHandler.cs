@@ -30,15 +30,17 @@ namespace ServiceLogic.Handlers.ClientOperations
 
                     if (context.Body == null)
                     {
+                        _handlerStatus = MessageEventHandlerStatuses.Error;
                         throw new HandlerException(nameof(CommonErrorTypes), (int)CommonErrorTypes.BadRequest, "Result message body is empty", HandlerErrorTypes.RequestError);
                     }
-
-                    if (context.Body is ErrorMessage errorMessage)
+                    else if (context.Body is ErrorMessage errorMessage)
                     {
-                        ThrowMessageException(errorMessage.ErrorCode);
+                        _handlerStatus = MessageEventHandlerStatuses.Error;
+                        _exception = GetMessageException(errorMessage.ErrorCode);
                     }
                     else
                     {
+                        _handlerStatus = MessageEventHandlerStatuses.Success;
                         _result = _mapper.Map<CreateClientWithdrawOperationResult>(context.Body);
                     }
                 }
@@ -49,7 +51,7 @@ namespace ServiceLogic.Handlers.ClientOperations
             }
         }
 
-        private void ThrowMessageException(int errorCode)
+        private Exception GetMessageException(int errorCode)
         {
 
             (string errorCclass, string message, HandlerErrorTypes errorType) = errorCode switch
@@ -92,7 +94,7 @@ namespace ServiceLogic.Handlers.ClientOperations
                 )
             };
 
-            throw new HandlerException(errorCclass, errorCode, message, errorType);
+           return new HandlerException(errorCclass, errorCode, message, errorType);
         }
     }
 }

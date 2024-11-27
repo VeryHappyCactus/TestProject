@@ -19,23 +19,14 @@ $$
 						, co.ClientOperationStatus    		
 						, co.ClientOperationType      		
 						, ca.AccountTotalAmount      		as CurrentTotalAmount
-						, co.ClientAccountTotalAmountOld 	as TotalAamountOld
+						, co.ClientAccountTotalAmountOld 	as TotalAmountOld
 						, co.ClientAccountTotalAmountNew 	as TotalAmountNew
-						, co.ClientOperationValue          as ClientOperationValue
+						, co.ClientOperationValue          as OperationValue
 						, cac.CurrencyISOName				as ClientAccountCurrencyISOName
 						, c.CurrencyISOName					as OperationCurrencyISOName
 						, ces.SaleValue						as CurrencyCourseSaleValue
 						, ces.PurchaseValue					as CurrencyCoursePurchaseValue
-						, CASE 
-							WHEN ces.CurrencyExchangeCourseId IS NOT NULL THEN
-								json_object(
-									'CurrencyISOName' : c.CurrencyISOName, 
-									'SaleValue' : ces.SaleValue,		
-									'PurchaseValue' : ces.PurchaseValue,	
-									'CreationDate' : ces.CreationDate 
-								) 
-							ELSE NULL
-							END as  CurrentExchangeCourse
+						, ces.CreationDate					as CurrencyCourseCreationDate
 					FROM ClientOperation co
 					INNER JOIN ClientAccount ca
 						ON co.ClientAccountId = ca.ClientAccountId
@@ -73,16 +64,7 @@ $$
 						, c.CurrencyISOName					as OperationCurrencyISOName
 						, ces.SaleValue						as CurrencyCourseSaleValue
 						, ces.PurchaseValue					as CurrencyCoursePurchaseValue
-						, CASE 
-							WHEN ces.CurrencyExchangeCourseId IS NOT NULL THEN
-								json_object(
-									'CurrencyISOName' : c.CurrencyISOName, 
-									'SaleValue' : ces.SaleValue,		
-									'PurchaseValue' : ces.PurchaseValue,	
-									'CreationDate' : ces.CreationDate 
-								) 
-							ELSE NULL
-							END as  CurrentExchangeCourse
+						, ces.CreationDate					as CurrencyCourseCreationDate
 					FROM ClientAccount ca
 					INNER JOIN Currency cac
 						ON ca.CurrencyId = cac.CurrencyId
@@ -100,7 +82,7 @@ $$
 						ON c.CurrencyId = ces.CurrencyId
 					WHERE ca.ClientId = (msg ->> 'client_id')::uuid)
 
-					SELECT json_agg(c.*) 
+					SELECT json_agg(c) 
 					FROM cte as c
 			);
 

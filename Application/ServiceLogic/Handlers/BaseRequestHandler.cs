@@ -21,12 +21,14 @@ namespace ServiceLogic.Handlers
         protected readonly TimeSpan _timeout;
 
         protected THandlerResponse? _result;
+        protected Exception? _exception;
+        protected MessageEventHandlerStatuses? _handlerStatus;
 
         public BaseRequestHandler(IQueueManager queueManager, IMapper mapper)
             : base(queueManager, mapper)
         {
             _eventWaitHandle = new EventWaitHandle(false, EventResetMode.ManualReset);
-            _timeout = TimeSpan.FromSeconds(30_000);
+            _timeout = TimeSpan.FromSeconds(30);
         }
 
         public override async Task<THandlerResponse> Handle(THandlerRequest request, CancellationToken cancellationToken)
@@ -55,10 +57,12 @@ namespace ServiceLogic.Handlers
                 {
                     if (_result == null)
                     {
-                        throw new HandlerException(nameof(CommonErrorTypes), (int)CommonErrorTypes.BadRequest, "Timeout exception, result did not get in time", HandlerErrorTypes.RequestError);
+                        if (_handlerStatus.HasValue && _handlerStatus == MessageEventHandlerStatuses.Error && _exception != null)
+                            throw _exception;
+                        else if (!_handlerStatus.HasValue && _handlerStatus != MessageEventHandlerStatuses.Success)
+                            throw new HandlerException(nameof(CommonErrorTypes), (int)CommonErrorTypes.BadRequest, "Timeout exception, result did not get in time", HandlerErrorTypes.RequestError);
                     }
                 }
-
             }
             finally
             {

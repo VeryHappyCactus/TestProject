@@ -31,7 +31,7 @@ $$
 						 c.CurrencyISOName
 						, ces.SaleValue
 						, ces.PurchaseValue
-						, cmd.MaxCreationDate
+						, cmd.MaxCreationDate as CreationDate
 					FROM CurrencyExchangeCourse ces
 					INNER JOIN Currency c
 						ON ces.CurrencyId = c.CurrencyId

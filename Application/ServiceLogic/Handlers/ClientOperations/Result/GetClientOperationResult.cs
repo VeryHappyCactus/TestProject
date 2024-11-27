@@ -11,10 +11,10 @@ namespace ServiceLogic.Handlers.ClientOperations.Result
         public decimal OperationValue { get; set; }
         public decimal? CurrencyCourseSaleValue { get; set; }
         public decimal? CurrencyCoursePurchaseValue { get; set; }
+        public DateTime? CurrencyCourseCreationDate { get; set; }
         public CurrencyISONames? ClientAccountCurrencyISOName { get; set; }
         public CurrencyISONames? OperationCurrencyISOName { get; set; }
         public ClientOperationTypes ClientOperationType { get; set; }
         public ClientOperationStatuses ClientOperationStatus { get; set; }
-        public GetExchangeCourseResult? CurrentExchangeCourse { get; set; }
     }
 }
