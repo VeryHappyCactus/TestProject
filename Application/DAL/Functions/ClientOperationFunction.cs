@@ -49,8 +49,6 @@ namespace DAL.Functions
             DynamicParameters parameters = new DynamicParameters();
             parameters.Add("searchDate", date, System.Data.DbType.Date, System.Data.ParameterDirection.Input);
 
-            //param: new { searchDate = date.Date.ToShortDateString()
-
             IEnumerable<ExchangeCourseResult[]> result = await _dbConnection
                 .QueryAsync<ExchangeCourseResult[]>("select * from fn_GetCurrencyExchangeCourse(@searchDate)", parameters);
 
